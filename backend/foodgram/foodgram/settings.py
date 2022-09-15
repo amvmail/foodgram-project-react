@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 
 from dotenv import load_dotenv
 
@@ -26,7 +27,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'api.apps.ApiConfig',
-    'reviews.apps.ReviewsConfig',
+    # 'reviews.apps.ReviewsConfig',
     'users.apps.UsersConfig',
 ]
 
