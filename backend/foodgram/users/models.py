@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 class User(AbstractUser):
@@ -11,8 +11,8 @@ class User(AbstractUser):
         (USER, 'User'),
     ]
 
-    login = models.CharField(
-        verbose_name='login',
+    username = models.CharField(
+        verbose_name='username',
         max_length=100,
         unique=True
     )
@@ -30,21 +30,11 @@ class User(AbstractUser):
         max_length=200,
         unique=False
     )
-    role = models.CharField(
-        verbose_name='Роль',
-        max_length=30,
-        choices=ROLES,
-        default=USER
-    )
     bio = models.TextField(
         verbose_name='Информация о себе',
         null=True,
         blank=True
     )
-
-    @property
-    def is_moderator(self):
-        return self.role == self.MODERATOR
 
     @property
     def is_admin(self):
@@ -64,4 +54,3 @@ class User(AbstractUser):
                 name="username_is_not_me"
             )
         ]
-
