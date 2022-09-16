@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django_filters',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
+    'sorl.thumbnail',
     # 'reviews.apps.ReviewsConfig',
 ]
 
