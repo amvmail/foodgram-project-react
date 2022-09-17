@@ -1,0 +1,17 @@
+<!-- yatube/templates/posts/includes/recipe_list.html -->
+{% load thumbnail %}
+{% load static %}
+<article>
+            <ul>
+              <li>
+                Автор: {{ recipe.author }}
+              </li>
+              <li>
+                Дата публикации: {{ recipe.pub_date|date:"d E Y" }}
+              </li>
+            </ul>
+            {% thumbnail recipe.image "960x550" crop="center" upscale=True as im %}
+            <img class="card-img my-2" src="{{ im.url }}">
+            {% endthumbnail %}
+            <p>{{ recipe.text }}</p>
+</article>

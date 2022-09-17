@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block title %}  
+  <head>
+    {% load static %}
+    {% load user_filters %}
+    {% load thumbnail %}
+  </head>
+  {% endblock %}  
+      {% block content %}
+      <div class="container py-5">
+      <div class="mb-5">  <!-- проверить отступ от шапки профиля -->
+        <h1> Все рецепты пользователя {{ author }}</h1>
+        <h3> Всего рецептов: {{recipe.count }} </h3>
+        {% if user != author %}
+        {% if following %}
+          <a
+            href="{% url 'recipe:profile_unfollow' author.username %}" role="button"
+            <button type="submit" class="btn btn-primary"
+            >Отписаться
+            </button>
+          </a>
+        {% else %}
+          <a
+             href="{% url 'recipe:profile_follow' author.username %}" role="button"
+             <button type="submit" class="btn btn-primary"
+             >Подписаться
+             </button>
+           </a>
+          {% endif %}
+         {% endif %}
+      </div>  <!-- проверить отступ от шапки профиля -->
+        <article>
+        {% for recipe in page_obj %}
+          <br>
+          <ul>
+            <li> Автор: {{ recipe.author }} </li>
+              {% if recipe.author %}
+              <li class="list-group-item">
+                <!-- кнопка Все рецепты пользователя -->
+              <a class="btn btn-sm text-muted"   
+              <a href="{% url 'recipe:profile' username=recipe.author.username %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Все рецепты пользователя
+                </button>
+              </a>
+              <!-- конец кнопки Все рецепты пользователя -->
+              {% endif %}
+              </li>  
+            <li>
+              Дата публикации: {{recipe.pub_date|date:"d E Y"}}
+            </li>
+          </ul>
+          {% thumbnail post.image "960x550" crop="center" upscale=True as im %}
+            <img class="card-img my-2" src="{{ im.url }}">
+            {% endthumbnail %}
+          <p>{{ recipe.text }}</p>
+          <li>
+            <li class="list-group-item">
+              <!-- кнопка подробная информация -->
+            <a class="btn btn-sm text-muted"   
+            <a href="{% url 'recipe:recipe_detail' recipe_id=recipe.id %}"
+            <div class="col-md-6 offset-md-4">
+              <button type="submit" class="btn btn-primary"
+              >Подробная информация
+              </button>
+            </a>
+            <!-- конец кнопки подробная информация -->
+            </li>
+        </article>
+        {% if recipe.group %}
+        <li class="list-group-item">
+          <!-- кнопка все записи группы -->
+          <a class="btn btn-sm text-muted"   
+          <a href="{% url 'recipe:group_recipe' recipe.group.slug %}"
+          <div class="col-md-6 offset-md-4">
+            <button type="submit" class="btn btn-primary"
+            >Все записи Автора (группы)
+            </button>
+          </a>
+          <!-- конец кнопки все записи атора (группы) -->
+        </li>
+        {% else %}
+          <br/>
+          <p> У рецепта нет соответствующей группы </p>
+          <br/>
+        {% endif%}          
+        {% endfor %}
+        {% include 'recipe/includes/paginator.html' %}
+      </div>
+  {% endblock %}

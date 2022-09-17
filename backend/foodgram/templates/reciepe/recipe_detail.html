@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+<head>
+    <title><h3>Проект Foodgram</h3></title>
+    {% load static %}
+    {% load user_filters %}
+</head>
+      {% block content %}
+      {% load thumbnail %}
+      {% block title %}<h2> Рецепт </h2>
+      {{ detail_recipe.text|truncatewords:30 }} {% endblock %}
+        <br> <br> <br>
+        <div class="row">
+        <aside class="col-12 col-md-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              Дата публикации: {{ detail_recipe.pub_date|date:"d E Y" }}
+            </li>
+            <li class="list-group-item">
+            {% if user == detail_recipe.author %}
+            <!-- кнопка редактировать -->
+            <a class="btn btn-sm text-muted"   
+            <a href="{% url 'recipe:recipe_edit' recipe_id=detail_recipe.id %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Редактировать
+                </button>
+              </a>
+              <!-- конец кнопки редактирование -->
+              {% endif %}
+              {% if detail_recipe.group.slug %}
+              <li class="list-group-item">
+              Группа: {{ detail_recipe.group.title }}
+              <br>
+              <!-- кнопка все записи группы -->
+              <a class="btn btn-sm text-muted"   
+              <a href="{% url 'recipe:group_recipe' detail_recipe.group.slug %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Все записи группы
+                </button>
+              </a>
+              <!-- конец кнопки все записи группы -->
+              {% endif %}
+            </li>
+              <li class="list-group-item">
+                Автор: {{ detail_recipe.author }}
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+              Всего рецептов автора:  <span >{{ recipe_count }}</span>
+            </li>
+            <li class="list-group-item">
+              <!-- кнопка Все рецепты пользователя -->
+              <a class="btn btn-sm text-muted"   
+              <a href="{% url 'recipe:profile' detail_recipe.author %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Все рецепты пользователя
+                </button>
+              </a>
+              <!-- конец кнопки Все рецепты пользователя -->
+              </li>
+          </ul>
+        </aside>
+        <article class="col-12 col-md-9">
+          {% thumbnail detail_recipe.image "960x550" crop="center" upscale=True as im %}
+          <img class="card-img my-2" src="{{ im.url }}">
+          {% endthumbnail %}
+          <p> {{detail_recipe.text}} </p>
+        </article>
+      </div>
+      {% include 'recipe/includes/comments.html' %}
+      {% endblock %}

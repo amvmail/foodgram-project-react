@@ -33,7 +33,8 @@ class User(AbstractUser):
     bio = models.TextField(
         verbose_name='Информация о себе',
         null=True,
-        blank=True
+        blank=True,
+        unique=False
     )
 
     @property

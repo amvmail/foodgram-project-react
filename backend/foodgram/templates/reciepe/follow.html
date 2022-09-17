@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+  <head>
+    <title><h3>Проект Foodgram</h3></title>
+    {% load static %}
+    {% load thumbnail %}
+    {% load cache %}
+  </head>
+      {% block content %}
+      {% include 'recipe/includes/switcher.html' %}
+      {% cache 20 index page_obj %}
+        <h1>Последние обновления на сайте</h1>
+          {% for recipe in page_obj %}
+          {% include 'recipe/includes/recipe_list.html' %}
+          {% if recipe.group %}
+            <!-- кнопка все записи группы -->
+            <a class="btn btn-sm text-muted"   
+              <a href="{% url 'recipe:recipe_posts' recipe.group.slug %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Все записи Автора (было Группы)
+                </button>
+              </a>
+              <!-- конец кнопки все записи группы -->
+            {% endif %}
+            <!-- кнопка все записи автора -->
+            <a class="btn btn-sm text-muted"   
+              <a href="{% url 'recipe:profile' recipe.author %}"
+              <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary"
+                >Все записи автора
+                </button>
+              </a>
+              <!-- конец кнопки все записи автора -->
+              <!-- кнопка просмотра рецепта -->
+            <a class="btn btn-sm text-muted"   
+            <a href="{% url 'recipe:recipe_detail' recipe_id=recipe.id %}"
+            <div class="col-md-6 offset-md-4">
+              <button type="submit" class="btn btn-primary"
+              >Подробная информация
+              </button>
+            </a>
+            <!-- конец кнопки просмотра рецепта -->
+            {% if not forloop.last %}<hr>{% endif %}
+          {% endfor %}
+          {% endcache %}
+          {% include 'recipe/includes/paginator.html' %}
+      {% endblock %}

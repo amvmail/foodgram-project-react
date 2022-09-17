@@ -1,0 +1,16 @@
+<!-- templates/core/404.html -->
+{% extends "base.html" %}
+{% block title %}Custom 404{% endblock %}
+{% block content %}
+<!-- Загрузка тегов библиотеки в шаблон -->
+{% load thumbnail %}
+  <h1>Custom 404</h1>
+  <p>Страницы с адресом {{ path }} не существует</p>
+  <a href="{% url 'posts:posts' %}">Идите на главную</a>
+
+<!-- Пример использования тега для пропорционального уменьшения и обрезки -->
+<!-- картинки до размера 100x100px с центрированием -->
+{% thumbnail item.image "100x100" crop="center" as im %}
+  <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+{% endthumbnail %}
+{% endblock %}
