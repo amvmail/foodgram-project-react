@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'sorl.thumbnail',
+    'recipe.apps.RecipeConfig',
     # 'reviews.apps.ReviewsConfig',
 ]
 
