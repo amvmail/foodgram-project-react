@@ -55,3 +55,9 @@ class User(AbstractUser):
                 name="username_is_not_me"
             )
         ]
+
+
+class ChangePassword(models.Model):
+    old_password = models.CharField(max_length=20)
+    new_password = models.CharField(max_length=20)
+    confirm_new_password = models.CharField(max_length=20)
