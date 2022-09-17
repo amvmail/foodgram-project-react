@@ -8,7 +8,7 @@ urlpatterns = [
     # начальная страница
     path('', views.index, name='recipe'),
     # посты групп - сделать 'author/<slug:slug>/'
-    # path('group/<slug:slug>/', views.group_posts, name='group_posts'),
+    path('tag/<slug:slug>/', views.tag_recipe, name='tag_recipe'),
     # профайл user
     path('profile/<str:username>/', views.profile, name='profile'),
     # просмотр записи

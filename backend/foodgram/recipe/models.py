@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-# from core.models import CreatedModel
+from core.models import CreatedModel
 from users.models import User
 
 # User = get_user_model()
 
 
-class Group(models.Model):
+class Tag(models.Model):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True)
     description = models.TextField()
@@ -17,8 +17,8 @@ class Group(models.Model):
 
 class Recipe(models.Model):
     text = models.TextField(
-        'Текст поста',
-        help_text='Введите текст поста'
+        'Текст рецепта',
+        help_text='Введите текст рецепта'
     )
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     author = models.ForeignKey(
@@ -26,18 +26,18 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='author')  # проверить правильность
-    group = models.ForeignKey(
-        Group,
+    tag = models.ForeignKey(
+        Tag,
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='posts',  # было поправлено с qroups
-        verbose_name='Группа',
-        help_text='Выберите группу'
+        related_name='recipe',  # было поправлено с qroups
+        verbose_name='Tag',
+        help_text='Выберите Tag'
     )
     image = models.ImageField(
-        'Картинка',
-        upload_to='posts/',
+        'Фото рецепта',
+        upload_to='recipe/',
         blank=True
     )
     # Аргумент upload_to указывает директорию,
@@ -45,8 +45,8 @@ class Recipe(models.Model):
 
     class Meta:
         ordering = ['-pub_date']
-        verbose_name = 'Пост'
-        verbose_name_plural = 'Посты'
+        verbose_name = 'Рецепт'
+        verbose_name_plural = 'Рецепты'
 
     def __str__(self):
         return self.text[:15]
@@ -63,10 +63,10 @@ class Comment(CreatedModel):
         on_delete=models.CASCADE,
         verbose_name='Автор_комента',
         related_name='comments')  # проверить правильность
-    post = models.ForeignKey(
-        Post,
+    recipe = models.ForeignKey(
+        Recipe,
         on_delete=models.CASCADE,
-        verbose_name='Пост_для_комента',
+        verbose_name='Рецепт_для_комента',
         related_name='comments')  # проверить правильность
 
     def __str__(self):

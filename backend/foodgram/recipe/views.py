@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from recipe.recipe_global import QUANT_OF_POSTS
 from .forms import RecipeForm, CommentForm
-from .models import Group, Recipe, User, Comment, Follow
+from .models import Tag, Recipe, User, Comment, Follow
 
 
 def authorized_only(func):
@@ -36,16 +36,16 @@ def index(request):
     return render(request, template, context)
 
 
-def group_posts(request, slug):
-    template = 'posts/group_list.html'
-    group = get_object_or_404(Group, slug=slug)
-    posts = Post.objects.all().filter(group=group)
-    paginator = Paginator(posts, QUANT_OF_POSTS)
+def tag_recipe(request, slug):
+    template = 'recipe/tag_list.html'
+    tag = get_object_or_404(Tag, slug=slug)
+    recipe = Recipe.objects.all().filter(tag=tag)
+    paginator = Paginator(recipe, QUANT_OF_POSTS)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     context = {
-        'group': group,
-        'posts': posts,
+        'tag': tag,
+        'recipe': recipe,
         'page_obj': page_obj,
     }
     return render(request, template, context)
@@ -77,7 +77,7 @@ def profile(request, username):
 
 def recipe_detail(request, recipe_id):
     detail_recipe = get_object_or_404(Recipe, id=recipe_id)
-    post_count = Recipe.objects.filter(author=detail_recipe.author).count()
+    recipe_count = Recipe.objects.filter(author=detail_recipe.author).count()
     template = 'recipe/recipe_detail.html'
     form = CommentForm(request.POST or None)
     comments = Comment.objects.filter(recipe=detail_recipe)
@@ -164,7 +164,7 @@ def profile_follow(request, username):
     is_follower = Follow.objects.filter(user=user, author=author)
     if user != author and not is_follower.exists():
         Follow.objects.get_or_create(user=request.user, author=author)
-    return redirect('posts:profile', username)
+    return redirect('recipe:profile', username)
 
 
 @login_required
@@ -175,4 +175,4 @@ def profile_unfollow(request, username):
         author=author
     )
     follow.delete()
-    return redirect('posts:profile', username)
+    return redirect('recipe:profile', username)
