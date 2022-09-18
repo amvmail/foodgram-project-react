@@ -3,8 +3,6 @@ from django.db import models
 from core.models import CreatedModel
 from users.models import User
 
-# User = get_user_model()
-
 
 class Tag(models.Model):
     title = models.CharField(max_length=200)
@@ -15,31 +13,45 @@ class Tag(models.Model):
         return self.title
 
 
+class Ingredients_recipe(models.Model):
+    name_ingredient = models.CharField(max_length=200, unique=True)
+    unit_ingredient = models.CharField(max_length=20)
+    description_ingredient = models.TextField(null=True, blank=True)
+
+
 class Recipe(models.Model):
-    text = models.TextField(
-        'Текст рецепта',
-        help_text='Введите текст рецепта'
-    )
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='author')  # проверить правильность
-    tag = models.ForeignKey(
-        Tag,
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name='recipe',  # было поправлено с qroups
-        verbose_name='Tag',
-        help_text='Выберите Tag'
-    )
+    title_recipe = models.CharField(max_length=200)
     image = models.ImageField(
         'Фото рецепта',
         upload_to='recipe/',
         blank=True
     )
+    text = models.TextField(
+        'Текст рецепта',
+        help_text='Введите текст рецепта'
+    )
+    ingredients_recipe = models.ForeignKey(
+        Ingredients_recipe,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='ingredients_recipe',  # было поправлено с qroups
+        verbose_name='ingredients_recipe',
+        help_text='Выберите ингредиент'
+    )
+    tag = models.ForeignKey(
+        Tag,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name='tag',  # было поправлено с qroups
+        verbose_name='tag',
+        help_text='Выберите Tag'
+    )
+    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     # Аргумент upload_to указывает директорию,
     # в которую будут загружаться пользовательские файлы.
 
