@@ -11,16 +11,16 @@
         <h1>Последние обновления на сайте</h1>
           {% for recipe in page_obj %}
           {% include 'recipe/includes/recipe_list.html' %}
-          {% if recipe.group %}
-            <!-- кнопка все записи группы -->
+          {% if recipe.tag %}
+            <!-- кнопка все записи c Tag -->
             <a class="btn btn-sm text-muted"   
-              <a href="{% url 'recipe:group_recipe' recipe.group.slug %}"
+              <a href="{% url 'recipe:tag_recipe' recipe.tag.slug %}"
               <div class="col-md-6 offset-md-4">
                 <button type="submit" class="btn btn-primary"
-                >Все записи Автора (группы)
+                >Все записи c Tag
                 </button>
               </a>
-              <!-- конец кнопки все записи группы -->
+              <!-- конец кнопки все записи c Tag -->
             {% endif %}
             <!-- кнопка все записи автора -->
             <a class="btn btn-sm text-muted"   

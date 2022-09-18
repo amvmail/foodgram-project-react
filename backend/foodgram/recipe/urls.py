@@ -2,11 +2,11 @@ from django.urls import path
 
 from . import views
 
-app_name = "recipe"
+app_name = 'recipe'
 
 urlpatterns = [
     # начальная страница
-    path('', views.index, name='recipe'),
+    path('', views.index, name='index'),
     # посты групп - сделать 'author/<slug:slug>/'
     path('tag/<slug:slug>/', views.tag_recipe, name='tag_recipe'),
     # профайл user

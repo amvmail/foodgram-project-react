@@ -10,10 +10,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='%_ivm!8z0jn9p1e!fcwh3mnsr_!h2dz9m54l)1vx9q%c+y)l#1')
 
-DEBUG = os.getenv('DEBUG', default=False)
+DEBUG = True
+# DEBUG = os.getenv('DEBUG', default=False)
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -59,6 +59,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.year.year',
             ],
         },
     },
@@ -122,7 +123,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # Вопрос - как прописать тут
-# STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static/'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'

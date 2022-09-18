@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from recipe.recipe_global import QUANT_OF_POSTS
+from .recipe_global import QUANT_OF_POSTS
 from .forms import RecipeForm, CommentForm
-from .models import Tag, Recipe, User, Comment, Follow
+from .models import Tag, Recipe, Comment, Follow
+from users.models import User
 
 
 def authorized_only(func):
@@ -82,7 +83,7 @@ def recipe_detail(request, recipe_id):
     form = CommentForm(request.POST or None)
     comments = Comment.objects.filter(recipe=detail_recipe)
     context = {
-        'post_count': post_count,
+        'recipe_count': recipe_count,
         'detail_recipe': detail_recipe,
         'comments': comments,
         'form': form,
@@ -93,7 +94,7 @@ def recipe_detail(request, recipe_id):
 @login_required
 def recipe_create(request):
     template = 'recipe/create_recipe.html'
-    form = PostForm(request.POST or None, files=request.FILES or None)
+    form = RecipeForm(request.POST or None, files=request.FILES or None)
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
@@ -108,8 +109,8 @@ def recipe_edit(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
     if recipe.author != request.user:
         return redirect('recipe:recipe_detail', recipe_id)
-    form = PostForm(request.POST or None,
-                    files=request.FILES or None, instance=recipe)
+    form = RecipeForm(request.POST or None,
+                      files=request.FILES or None, instance=recipe)
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
