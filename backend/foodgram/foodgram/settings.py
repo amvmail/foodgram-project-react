@@ -15,6 +15,18 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+# CACHES = {
+#    'default': {
+#        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#    }
+# }
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -26,12 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'recipe.apps.RecipeConfig',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
-    'sorl.thumbnail',
-    'recipe.apps.RecipeConfig',
     'core.apps.CoreConfig',
     'about.apps.AboutConfig',
+    'sorl.thumbnail',
     # 'reviews.apps.ReviewsConfig',
 ]
 
@@ -46,6 +58,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
+
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'recipe:index'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 TEMPLATES = [
@@ -106,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -125,18 +146,9 @@ STATIC_URL = '/static/'
 # Вопрос - как прописать тут
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-AUTH_USER_MODEL = 'users.User'
-
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
-
-DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
 
 
 REST_FRAMEWORK = {

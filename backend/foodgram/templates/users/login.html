@@ -1,5 +1,3 @@
-<!-- templates/users/login.html -->
-
 {% extends "base.html" %}
 {% block title %}Войти{% endblock %}
 {% block content %}
@@ -14,7 +12,7 @@
         <div class="card-body">
           {% if form.errors %}
               {% for field in form %}
-                {% for error in field.errors %}            
+                {% for error in field.errors %}
                   <div class="alert alert-danger">
                     {{ error|escape }}
                   </div>
@@ -28,7 +26,7 @@
           {% endif %}
             <form method="post"
             {% if user.is_authenticated %}
-              action="{% url 'recipe:recipe' %}"
+              action="{% url 'recipe:index' %}"
             {% endif %}
             >
           {% for field in form %}

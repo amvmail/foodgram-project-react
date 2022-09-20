@@ -12,12 +12,19 @@
 ***
 superuser (admin) - login     super
                     passwd    123456Aa
+                    reg_email admin@foodgram.ru
 testuser1 (user)  - login     food1
                     passwd    Foodfood1
                     reg_email food1@foodgram.ru
-testuser1 (user)  - login     food2
+testuser2 (user)  - login     food2
                     passwd    Foodfood2
                     reg_email food2@foodgram.ru
+testuser3 (user)  - login     food3
+                    passwd    Foodfood3
+                    reg_email food3@foodgram.ru
+testuser4 (user)  - login     food4
+                    passwd    123456Qw#
+                    reg_email food4@foodgram.ru
 ***
 
 **Работа по подготовке сервера для установки сервиса.**

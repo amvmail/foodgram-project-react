@@ -11,6 +11,8 @@ urlpatterns = [
     path('tag/<slug:slug>/', views.tag_recipe, name='tag_recipe'),
     # профайл user
     path('profile/<str:username>/', views.profile, name='profile'),
+    # профайл тест user
+    path('accounts/profile/<str:username>/', views.profile, name='profile'),
     # просмотр записи
     path('recipe/<int:recipe_id>/', views.recipe_detail, name='recipe_detail'),
     # создание нового поста

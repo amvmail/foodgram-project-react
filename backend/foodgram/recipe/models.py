@@ -1,7 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from core.models import CreatedModel
-from users.models import User
+
+User = get_user_model()
 
 
 class Tag(models.Model):
@@ -47,7 +48,7 @@ class Recipe(models.Model):
         Tag,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='tag',  # было поправлено с qroups
+        related_name='tag',
         verbose_name='tag',
         help_text='Выберите Tag'
     )
