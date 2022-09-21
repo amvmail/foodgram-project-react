@@ -14,7 +14,7 @@ superuser (admin) - login     super
                     passwd    123456Aa
                     reg_email admin@foodgram.ru
 testuser1 (user)  - login     food1
-                    passwd    Foodfood1
+                    passwd    12345678Aa
                     reg_email food1@foodgram.ru
 testuser2 (user)  - login     food2
                     passwd    Foodfood2

@@ -8,7 +8,9 @@ from .models import Recipe, Comment
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
-        fields = ('text', 'tag', 'image')
+        fields = ('title_recipe ', 'image', 'text', 'ingredients_recipe',
+                  'tag', 'time_to_cook_recipe'
+                  )
         text = forms.CharField(label='Текст рецепта'),
         image = forms.ImageField(label='Фото рецепта'),
         tag = forms.CharField(label='Tag')
