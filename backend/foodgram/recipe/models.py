@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from core.models import CreatedModel
-
-User = get_user_model()
+from users.models import User
 
 
 class Tag(models.Model):
@@ -26,7 +25,7 @@ class Recipe(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='author')  # проверить правильность
-    title_recipe = models.CharField(max_length=200, unique_for_date='pub_date')
+    title_recipe = models.CharField(max_length=200)
     image = models.ImageField(
         'Фото рецепта',
         upload_to='recipe/',
@@ -40,7 +39,7 @@ class Recipe(models.Model):
         Ingredients_recipe,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='ingredients_recipe',
+        related_name='ingredients_recipe',  # было поправлено с qroups
         verbose_name='ingredients_recipe',
         help_text='Выберите ингредиент'
     )
@@ -48,11 +47,10 @@ class Recipe(models.Model):
         Tag,
         null=True,
         on_delete=models.SET_NULL,
-        related_name='tag',
+        related_name='tag',  # было поправлено с qroups
         verbose_name='tag',
         help_text='Выберите Tag'
     )
-    time_to_cook_recipe = models.DecimalField('Время приготовления, мин.', ..., max_digits=4, decimal_places=0)
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     # Аргумент upload_to указывает директорию,
     # в которую будут загружаться пользовательские файлы.
@@ -71,6 +69,7 @@ class Comment(CreatedModel):
         'Текст комментария',
         help_text='Введите текст комментария'
     )
+    # created = yatube/models.py/created
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

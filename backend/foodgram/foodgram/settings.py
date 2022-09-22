@@ -15,16 +15,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
-
-# CACHES = {
-#    'default': {
-#        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#    }
-# }
-
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 # Application definition
@@ -38,12 +28,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'recipe.apps.RecipeConfig',
     'api.apps.ApiConfig',
     'users.apps.UsersConfig',
+    'sorl.thumbnail',
+    'recipe.apps.RecipeConfig',
     'core.apps.CoreConfig',
     'about.apps.AboutConfig',
-    'sorl.thumbnail',
     # 'reviews.apps.ReviewsConfig',
 ]
 
@@ -58,6 +48,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
+
+AUTH_USER_MODEL = 'users.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
@@ -127,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -146,9 +138,9 @@ STATIC_URL = '/static/'
 # Вопрос - как прописать тут
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 
 
 REST_FRAMEWORK = {

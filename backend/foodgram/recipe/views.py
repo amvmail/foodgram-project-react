@@ -4,10 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .recipe_global import QUANT_OF_POSTS
 from .forms import RecipeForm, CommentForm
 from .models import Tag, Recipe, Comment, Follow
-# from users.models import User
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from users.models import User
 
 
 def authorized_only(func):
