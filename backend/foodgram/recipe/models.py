@@ -5,18 +5,36 @@ from users.models import User
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-    description = models.TextField()
+    title_tag = models.CharField(verbose_name='тег', max_length=100)
+    slug = models.SlugField(verbose_name='значение тега', max_length=200, unique=True)
+    colour_code_tag = models.CharField(verbose_name='стиль тега',
+                             max_length=50, null=True)
+
+    class Meta:
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'
 
     def __str__(self):
-        return self.title
+        return self.slug
 
 
 class Ingredients_recipe(models.Model):
-    name_ingredient = models.CharField(max_length=200, unique=True)
-    unit_ingredient = models.CharField(max_length=20)
+    name_ingredient = models.CharField(verbose_name='название ингредиента',
+                                       max_length=200, unique=True)
+    unit_ingredient = models.CharField(verbose_name='единица измерения',
+                                       max_length=32)
     description_ingredient = models.TextField(null=True, blank=True)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(
+            fields=['name_ingredient', 'unit_ingredient'],
+            name='unique_recipe_ingredient')]
+        ordering = ['name_ingredient', ]
+        verbose_name = 'ингредиент'
+        verbose_name_plural = 'ингредиенты'
+
+        def __str__(self):
+            return f'{self.name_ingredient} ({self.unique_recipe_ingredient})'
 
 
 class Recipe(models.Model):
@@ -24,36 +42,38 @@ class Recipe(models.Model):
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
-        related_name='author')  # проверить правильность
-    title_recipe = models.CharField(max_length=200)
+        related_name='recipe')
+    title_recipe = models.CharField(verbose_name='название', max_length=200)
     image = models.ImageField(
-        'Фото рецепта',
+        verbose_name='Фото рецепта',
         upload_to='recipe/',
-        blank=True
+        null=True
     )
     text = models.TextField(
-        'Текст рецепта',
+        verbose_name='Текст рецепта',
         help_text='Введите текст рецепта'
     )
-    ingredients_recipe = models.ForeignKey(
+    ingredients_recipe = models.ManyToManyField(
         Ingredients_recipe,
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name='ingredients_recipe',  # было поправлено с qroups
+        related_name='ingredients_recipe',
         verbose_name='ingredients_recipe',
-        help_text='Выберите ингредиент'
+        help_text='Выберите ингредиент',
+        through='Amount',
+        through_fields=('recipe',
+                        'ingredient')
     )
-    tag = models.ForeignKey(
+    tag = models.ManyToManyField(
         Tag,
-        null=True,
-        on_delete=models.SET_NULL,
-        related_name='tag',  # было поправлено с qroups
+        related_name='recipe',
         verbose_name='tag',
         help_text='Выберите Tag'
     )
+    cooking_time = models.PositiveIntegerField(
+        verbose_name='время приготовления',
+        default=1
+    )
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
-    # Аргумент upload_to указывает директорию,
-    # в которую будут загружаться пользовательские файлы.
+
 
     class Meta:
         ordering = ['-pub_date']
@@ -62,6 +82,35 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.text[:15]
+
+
+class Amount(models.Model):
+    recipe = models.ForeignKey(Recipe,
+                               verbose_name='рецепт',
+                               related_name='recipe_amounts',
+                               on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredients_recipe,
+                                   verbose_name='ингредиент',
+                                   related_name='ingredient_amounts',
+                                   on_delete=models.CASCADE)
+    quantity = models.IntegerField(verbose_name='количество')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['ingredient', 'recipe'],
+                name='unique_ingredient_recipe'
+            ),
+            models.CheckConstraint(
+                check=models.Q(quantity__gte=1),
+                name='quantity_gte_1'
+            ),
+        ]
+        verbose_name = 'ингредиент рецепта'
+        verbose_name_plural = 'ингредиенты рецепта'
+
+    def __str__(self):
+        return self.ingredient.title
 
 
 class Comment(CreatedModel):
@@ -104,3 +153,43 @@ class Follow(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class ShopList(models.Model):
+    user = models.ForeignKey(get_user_model(),
+                             verbose_name='пользователь',
+                             related_name='shoplist',
+                             on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe,
+                               verbose_name='рецепты',
+                               related_name='shoplist',
+                               on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['user', 'recipe'],
+                                               name='unique_shoplist')]
+        verbose_name = 'список покупок'
+        verbose_name_plural = 'списки покупок'
+
+    def __str__(self):
+        return self.recipe.title_recipe
+
+
+class Favorite(models.Model):
+    recipe = models.ForeignKey(Recipe,
+                               verbose_name='рецепт в избранном',
+                               related_name='favorite_recipes',
+                               on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             verbose_name='пользователь',
+                             related_name='favorites',
+                             on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['recipe', 'user'],
+                                               name='UniqueFavorite')]
+        verbose_name = 'избранное'
+        verbose_name_plural = 'избранное'
+
+    def __str__(self):
+        return self.recipe.title

@@ -10,7 +10,7 @@ handler500 = "core.views.server_error"
 urlpatterns = [
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    # path('accounts/', include('django.contrib.auth.urls')),
     path('', include('recipe.urls', namespace='recipe')),
     path('admin/', admin.site.urls),
     path('about/', include('about.urls', namespace='about')),
