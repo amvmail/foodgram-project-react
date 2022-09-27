@@ -1,8 +1,9 @@
+import sys
+sys.path.append("../users")
 from django.contrib.auth import get_user_model
 from django.db import models
 from core.models import CreatedModel
 from users.models import User
-
 
 class Tag(models.Model):
     title_tag = models.CharField(verbose_name='тег', max_length=100)
@@ -55,12 +56,7 @@ class Recipe(models.Model):
     )
     ingredients_recipe = models.ManyToManyField(
         Ingredients_recipe,
-        related_name='ingredients_recipe',
-        verbose_name='ingredients_recipe',
-        help_text='Выберите ингредиент',
         through='Amount',
-        through_fields=('recipe',
-                        'ingredient')
     )
     tag = models.ManyToManyField(
         Tag,
@@ -72,7 +68,9 @@ class Recipe(models.Model):
         verbose_name='время приготовления',
         default=1
     )
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+    pub_date = models.DateTimeField('Дата публикации',
+                                    auto_now_add=True,
+                                    db_index=True)
 
 
     class Meta:
@@ -85,6 +83,10 @@ class Recipe(models.Model):
 
 
 class Amount(models.Model):
+    """
+        Модель, связывающая рецепт и ингредиент.
+        В этой таблице будет хранится кол-во ингредиента в рецепте.
+    """
     recipe = models.ForeignKey(Recipe,
                                verbose_name='рецепт',
                                related_name='recipe_amounts',
@@ -110,7 +112,7 @@ class Amount(models.Model):
         verbose_name_plural = 'ингредиенты рецепта'
 
     def __str__(self):
-        return self.ingredient.title
+        return self.Ingredients_recipe.name_ingredient
 
 
 class Comment(CreatedModel):
@@ -129,6 +131,10 @@ class Comment(CreatedModel):
         on_delete=models.CASCADE,
         verbose_name='Рецепт_для_комента',
         related_name='comments')  # проверить правильность
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
 
     def __str__(self):
         return self.text[:15]
@@ -149,6 +155,8 @@ class Follow(models.Model):
     )
 
     class Meta:
+        verbose_name = 'Подписка на'
+        verbose_name_plural = 'Подписки на'
         unique_together = (('user', 'author'),)
 
     def __str__(self):

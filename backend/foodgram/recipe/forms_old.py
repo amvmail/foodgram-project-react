@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 from django.utils.text import slugify  # взято из инета
 
-from .models import Recipe, Amount, Tag, Ingredients_recipe, Comment
+from .models import Recipe, Amount, Ingredients_recipe, Comment
 
 
 class RecipeForm(forms.ModelForm):
@@ -16,7 +16,7 @@ class RecipeForm(forms.ModelForm):
         }
 
         cooking_time = forms.IntegerField(required=True, min_value=1)
-        image = forms.ImageField(required=False)
+        image = forms.ImageField(required=True)
 
         def save_recipe(self, recipe, ingredients):
             for title_recipe, quantity in ingredients_recipe.items():

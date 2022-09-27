@@ -1,90 +1,129 @@
 {% extends 'base.html' %}
 {% block title %}
+{% if is_edit %}
+Редактирование
+{% else %}
+Создание
+{% endif %}
+рецепта
+{% endblock %}
 {% load thumbnail %}
 {% load user_filters %}
-{% if is_edit %}
-  Редактирование рецепта
-{% else %}
-  Добавить запись
-{% endif %}
-{% endblock %}
 {% block content %}
-      <div class="container py-5">
-        <div class="row justify-content-center">
-          <div class="col-md-8 p-5">
-            <div class="card">
-              <div class="card-header">
-                {% if is_edit %}
-                  Редактировать
-                {% else %}
-                  Добавить запись
-                {% endif %}
-              </div>
-              <div class="card-body">
-                  {% if is_edit %}
-                    <form method="POST" enctype="multipart/form-data" action="{% url 'recipe:recipe_edit' recipe_id %}">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                    {% csrf_token %}  <!-- csrf_token -->
-                    {% for field in form %}  <!-- csrf_token -->
-					{% endfor %}  <!-- csrf_token -->
-                  {% else %}
-                  <form method="POST" enctype="multipart/form-data" action="{% url 'recipe:recipe_create' %}">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
-                    {% csrf_token %}  <!-- csrf_token -->
-                    {% for field in form %}  <!-- csrf_token -->
-					{% endfor %}  <!-- csrf_token -->
-                  {% endif %}
-                  <div class="form-group row my-3 p-3">
-                    <label for="{{ PostForm.text.id_text }}">
-                      {{ PostForm.text.label }}
-                      <span class="required text-danger" >* Обязательно для заполнения</span>
-                    </label>
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">{% if is_edit %}Редактирование рецепта{% else %}Создание рецепта{% endif %}</h1>
+    </div>
+    <div class="form-container">
+        <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form__group">
+                <label for="{{ form.title.id_for_label }}" class="form__label">Название рецепта</label>
+                <div class="form__field-group">
+                    {{ RecipeForm.title_recipe.id_title_recipe }}
+                    {% for error in form.title_recipe.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form__group">
+                <div class="form__group">
+                    <p class="form__label">Теги</p>
+                    <div class="form__field-group">
+                        <div class="tags">
+                            {% for tag in form.fields.tags.choices.queryset %}
+                                <div class="tags__item">
+                                    <input type="checkbox" name="tags" value="{{ tag.id }}"
+                                       {% if tag.id in form.tags.value %} checked {% endif %}
+                                       id="id_{{ tag.id }}"  class="tags__checkbox tags__checkbox_style_{{ tag.style }}">
+                                    <label for="id_{{ tag.id }}" class="tags__label">{{ tag.name }}</label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {% for error in form.tags.errors %}
+                            <span class="form__error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="nameIngredient" class="form__label">Ингредиенты</label>
+                <div class="form__field-group">
+                    <div class="form__field-group-ingredientes">
+                        <div class="form__dropdown">
+                            <input type="text" id="nameIngredient" class="form__input">
+                            <div class="form__dropdown-items"></div>
+                        </div>
+
+                        <input type="number" id="cantidad" class="form__input" min="1">
+                        <label for="cantidad" class="form__label" id="cantidadVal">шт.</label>
+                    </div>
+                    <div class="form__field-group-ingredientes-container">
+                        {% for amount in recipe.recipe_amounts.all %}
+                        <div class="form__field-item-ingredient" id="ing{{ forloop.counter }}">
+                            <span> {{ amount.Ingredients_recipe.name_ingredient }} - {{ amount.quantity }} {{ amount.Ingredients_recipe.unit_ingredient }}</span>
+                            <span class="form__field-item-delete"></span>
+                            <input id="nameIngredient_{{ forloop.counter }}" name="nameIngredient_{{ forloop.counter }}" type="hidden" value="{{ amount.Ingredients_recipe.name_ingredient }}" class="ing_counter">
+                            <input id="valueIngredient_{{ forloop.counter }}" name="valueIngredient_{{ forloop.counter }}" type="hidden" value="{{ amount.quantity }}">
+                            <input id="unitsIngredient_{{ forloop.counter }}" name="unitsIngredient_{{ forloop.counter }}" type="hidden" value="{{ amount.Ingredients_recipe.unit_ingredient }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
+                    {% if errors %}
+                        <span class="form__error">{{ errors }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="{{ form.cooking_time.id_for_label }}" class="form__label">Время приготовления</label>
+                <div class="form__field-group form__field-group_time">
+                    {{ form.cooking_time }}
+                    <label for="{{ field.cooking_time.id_for_label }}" class="form__label">минут</label>
+                    {% for error in form.cooking_time.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form__group">
+                <label for="{{ form.text.id_for_label }}" class="form__label">Текст рецепта</label>
+                <div class="form__field-group">
+                    {{ form.text }}
+                    {% for error in form.text.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
                     <textarea name="text" cols="40" rows="10" class="form-control" required id="id_text"
                         {{ form.text }}
                     </textarea>
-                    <small id="id_text-help" class="form-text text-muted">
-                      {% if is_edit %}
-                        Редактирование рецепта
-                      {% else %}
-                        Новый рецепт
-                      {% endif %}
-                    </small>
-                  </div>
-                  <div class="form-group row my-3 p-3">
-                    <label for="id_group">
-                      Group                  
-                    </label>
-                      <select name="group" class="form-control" id="id_group">
-                      <option value="" selected>Выберите переделать</option>
-                      <option value="1">Группа 1: Переделать </option>
-                      <option value="4">Группа 2: Переделать</option>
-                      <option value="3">Группа 3: Переделать</option>
-                    </select>
-                    <small id="id_group-help" class="form-text text-muted">
-                      Группа, ПЕРЕДЕЛАТЬ к которой будет относиться пост
-                    </small>
-                  </div>
-                    <div class="form-group row my-3 p-3">
-                    <label for="id_image">
-                      Фото
-                    </label>
-                    <input type="file" name="image" accept="image/*" class="form-control" id="id_image">
-                    </div>
-                  <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-primary">
-                      {% if is_edit %}
-                        Сохранить
-                      {% else %}
-                        Добавить
-                      {% endif %}
-                      </button>
-
-                  </div>
-
-                </form>
-              </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-{% endblock %}
+            <div class="form__group">
+                <span class="form__label">Загрузить фото рецепта</span>
+                <div class="form__field-group">
+                        <div class="form__fileitem">{{ recipe.image.name }}</div>
+                        <div class="form__hidden">
+                            <input type="file" name="image" accept="image/*" class="form-control" id="id_image">
+
+                        </div>
+                    <div class="form__filename"></div>
+                    {% for error in form.image.errors %}
+                        <span class="form__error">{{ error }}</span>
+                    {% endfor %}
+
+                </div>
+            </div>
+            <div class="form__footer">
+                {% if is_edit %}
+                    <button class="button button_style_blue">Сохранить</button>
+                    <a style="margin-left: 2.5em" href="{% url 'delete_recipe' recipe.id %}" class="form__ingredient-link">Удалить</a>
+                {% else %}
+                    <button class="button button_style_blue">Создать рецепт</button>
+                    <form method="POST" enctype="multipart/form-data" action="{% url 'recipe:recipe_create' %}">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{csrf_token}}">
+                    {% csrf_token %}
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock content %}

@@ -1,61 +1,45 @@
-<header>
+<header class="header">
    {% load static %}
-   <link rel="icon" href="{% static 'img/logo.png' %}">
-   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
+   <link rel="icon" href="{% static 'img/favicon.png' %}">
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>Проект Foodgram</title>
    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <nav class="navbar navbar-light" style="background-color: lightskyblue">
-      <div class="container">
-        <a href="{% url 'recipe:index' %}">
-          <img src="{% static 'img/logo.png' width='5' height='5' class='d-inline-block align-top' alt='img/logo.png' %}"
-        </a>
-          <span style="color:red">Food</span>gram</a>
-       {% comment %}
-      Меню - список пунктов со стандартными классами Bootsrap.
-      Класс nav-pills нужен для выделения активных пунктов 
-      {% endcomment %}
-      <ul class="nav nav-pills">
-        <!-- для активации подсветки меню -->
-        {% with request.resolver_match.view_name as view_name %}
-        <li class="nav-item"> 
-          <a class="nav-link {% if view_name  == 'about:author' %}active{% endif %}" 
-            href="{% url 'about:author' %}">Об авторе</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if view_name  == 'about:tech' %}active{% endif %}"
-            href="{% url 'about:tech' %}">Технологии</a>
-        </li>
-        {% endwith %}
-        <!-- Проверка: авторизован ли пользователь? --> 
-        {% if user.is_authenticated %}
-        {% with request.resolver_match.view_name as view_name %}
-        <li class="nav-item"> 
-          <a class="nav-link {% if view_name  == 'recipe:recipe_create' %}active{% endif %}"
-            href="{% url 'recipe:recipe_create' %}">Новый рецепт</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link  link-light {% if view_name  == 'users:password_change' %}active{% endif %}"
-            href="{% url 'users:password_change' %}">Изменить пароль</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link link-light {% if view_name  == 'users:logout' %}active{% endif %}"
-            href="{% url 'users:logout' %}">Выйти</a>
-        </li>
-        {% endwith %}
-        <li class="nav-item">
-          <a class="nav-link">Пользователь: {{ user.username }}</a>
-        </li>
-        {% else %}
-        <li class="nav-item"> 
-          <a class="nav-link link-light" href="{% url 'users:login' %}">Войти</a>
-        </li>
-        <li class="nav-item"> 
-          <a class="nav-link link-light" href="{% url 'users:signup' %}">Регистрация</a>
-        </li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>      
+    <nav class="nav">
+        <div class="nav__container container">
+            {% if user.is_authenticated %}
+                {% with url_now=request.resolver_match.url_name %}
+                    <ul class="nav__items list">
+                        <li class="nav__item {% if url_now == 'recipe:index' or url_now == 'recipe:profile' or url_now == 'recipe:recipe_detail' %} nav__item_active {% endif %}"><a href="{% url 'recipe:index' %}" class="nav__link link">Рецепты</a></li>
+                        <li class="nav__item {% if url_now == 'follow_index' %} nav__item_active {% endif %}"><a href="{% url 'recipe:follow_index' %}" class="nav__link link">Мои подписки</a></li>
+                        <li class="nav__item {% if url_now == 'recipe_create' or url_now == 'recipe_edit'%} nav__item_active {% endif %}"><a href="{% url 'recipe:recipe_create' %}" class="nav__link link">Создать рецепт</a></li>
+                        <li class="nav__item {% if url_now == 'favorites' %} nav__item_active {% endif %}"><a href="{% url 'recipe:favorites' %}" class="nav__link link">Избранное</a></li>
+                        <li class="nav__item {% if url_now == 'shoplist' %} nav__item_active {% endif %}"><a href="{% url 'recipe:shoplist' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{% if request.user.shoplist.count > 0 %}{{ request.user.shoplist.count }}{% endif %}</span></li>
+                    </ul>
+                    <ul class="nav__items list">
+                        <li class="nav__item {% if url_now == 'password_change' %} nav__item_active {% endif %}"><a href="{% url 'users:password_change' %}" class="nav__link link">Изменить пароль</a></li>
+                        <li class="nav__item"><a href="{% url 'users:logout' %}" class="nav__link link">Выход</a></li>
+                    </ul>
+                    <ul class="nav__items list">
+                        <li class="nav__item"><a href="{% url 'about:author' %}" class="footer__link link">Об авторе </a></li>
+                        <li class="nav__item"><a href="{% url 'about:tech' %}" class="footer__link link">Технологии</a></li>
+                    </ul>
+                {% endwith %}
+            {% else %}
+                {% with url_now=request.resolver_match.url_name %}
+                    <ul class="nav__items list">
+                        <li class="nav__item {% if url_now == 'index' %} nav__item_active {% endif %}"><a href="{% url 'recipe:index' %}" class="nav__link link">Рецепты</a></li>
+                    </ul>
+                    <ul class="nav__items list">
+                        <li class="nav__item"><a href="{% url 'users:login' %}" class="nav__link link">Войти</a></li>
+                        <li class="nav__item"><a href="{% url 'users:signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+                    </ul>
+                    <ul class="nav__items list">
+                        <li class="nav__item"><a href="{% url 'about:author' %}" class="footer__link link">Об авторе </a></li>
+                        <li class="nav__item"><a href="{% url 'about:tech' %}" class="footer__link link">Технологии</a></li>
+                    </ul>
+                {% endwith %}
+            {% endif %}
+        </div>
+    </nav>
 </header>
