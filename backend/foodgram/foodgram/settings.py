@@ -15,7 +15,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
+# CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
 # Application definition
 
@@ -28,13 +28,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'api.apps.ApiConfig',
     'users.apps.UsersConfig',
     'sorl.thumbnail',
-    'recipe.apps.RecipeConfig',
-    'core.apps.CoreConfig',
+    'recipes.apps.RecipesConfig',
     'about.apps.AboutConfig',
-    # 'reviews.apps.ReviewsConfig',
+    # 'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +47,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'foodgram.urls'
 
-AUTH_USER_MODEL = 'users.User'
+# AUTH_USER_MODEL = 'users.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
@@ -57,14 +55,26 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
 
-LOGIN_URL = 'users:login'
-LOGIN_REDIRECT_URL = 'recipe:index'
+LOGIN_URL = '/auth/login/'
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'index'
 
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+INCLUDE_DIR = os.path.join(BASE_DIR, 'templates', 'include')
+ABOUT_DIR = os.path.join(BASE_DIR, 'templates', 'about')
+ERROR_DIR = os.path.join(BASE_DIR, 'templates', 'error')
+REGISTRATION_DIR = os.path.join(BASE_DIR, 'templates', 'registration')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [
+            TEMPLATES_DIR,
+            INCLUDE_DIR,
+            ABOUT_DIR,
+            ERROR_DIR,
+            REGISTRATION_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -72,7 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'core.context_processors.year.year',
+                'recipes.utils.get_shoplist',
             ],
         },
     },
@@ -100,6 +110,8 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
+ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -119,9 +131,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -134,14 +146,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# Вопрос - как прописать тут
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+RECORDS_ON_PAGE = 6
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [

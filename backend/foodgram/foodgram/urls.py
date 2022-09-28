@@ -1,24 +1,30 @@
 from django.conf import settings
+from django.conf.urls import handler400, handler403, handler404, handler500  # noqa
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.conf.urls.static import static
 
-handler404 = 'core.views.page_not_found'
-handler403 = "core.views.permission_denied"
-handler500 = "core.views.server_error"
+handler400 = 'foodgram.views.bad_request'  # noqa
+handler403 = 'foodgram.views.permissions_denied'  # noqa
+handler404 = 'foodgram.views.page_not_found'  # noqa
+handler500 = 'foodgram.views.server_error'  # noqa
 
 urlpatterns = [
-    path('auth/', include('users.urls', namespace='users')),
-    path('auth/', include('django.contrib.auth.urls')),
-    path('', include('recipe.urls', namespace='recipe')),
-    path('admin/', admin.site.urls),
-    path('about/', include('about.urls', namespace='about')),
+    path('about/',
+         include('about.urls', namespace='about')),
+    path('admin/',
+         admin.site.urls),
+    path('auth/',
+         include('users.urls')),
+    path('',
+         include('recipes.urls')),
 ]
 
 if settings.DEBUG:
-#    import debug_toolbar
+    import debug_toolbar
 
-#    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
-    urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
-    )
+    urlpatterns += (path('__debug__/', include(debug_toolbar.urls)),)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

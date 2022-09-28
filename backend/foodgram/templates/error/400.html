@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Ошибка 400{% endblock %}
+{% block static %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+{% endblock static %}
+{% block content %}
+<body class="body">
+    <main class="main container">
+        <div class="main__header">
+            <h1 class="main__title">Ошибка 400</h1>
+        </div>
+        <p class="lead">Неверный запрос</p>
+        <p class="lead"><a href="{% url  'index' %}">Вернуться на главную</a></p>
+    </main>
+</body>
+{% endblock %}
