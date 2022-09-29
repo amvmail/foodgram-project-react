@@ -2,12 +2,13 @@
 {% block title %}Рецепты{% endblock %}
 {% block static %}
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/pages/index.css' %}">
+    <!-- link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 {% endblock static %}
 {% block content %}
 {% csrf_token %}
 <body class="body">
-    <main class="main container">
+    <main class="container py-5">
         <div class="main__header">
             <h1 class="main__title">Рецепты</h1>
             {% include 'include/tag.html' with active_tags=active_tags%}
@@ -23,17 +24,3 @@
     </main>
 </body>
 {% endblock %}
-{% block js %}
-    <script src="{% static 'js/components/MainCards.js' %}"></script>
-    <script src="{% static 'js/components/Purchases.js' %}"></script>
-    <script src="{% static 'js/components/Favorites.js' %}"></script>
-    <script src="{% static 'js/config/config.js' %}"></script>
-    <script src="{% static 'js/components/CardList.js' %}"></script>
-    <script src="{% static 'js/components/Header.js' %}"></script>
-    <script src="{% static 'js/api/Api.js' %}"></script>
-    {% if user.is_authenticated %}
-        <script src="{% static 'indexAuth.js' %}"></script>
-    {% else %}
-        <script src="{% static 'indexNotAuth.js' %}"></script>
-    {% endif %}
-{% endblock js %}

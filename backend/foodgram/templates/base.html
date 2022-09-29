@@ -5,19 +5,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Foodgram</title>
     {% load static %}
     {% include 'include/header.html' %}
-    <title>{% block title %}{% endblock %} | Foodgram</title>
-    {% block static %}
-    {% endblock static %}
 </head>
 <body class="body">
-    <main>
+  <main class="container py-5">
     {% block content %}
+        <!-- содержимое страницы -->
     {% endblock content %}
-    </main>
-    <footer>
-    {% include 'include/footer.html' %}
-    </footer>
+    <style>html{visibility: visible;opacity:1;}</style>
+  </main>
 </body>
+  <footer>
+      {% include 'include/footer.html' %}
+  </footer>
 </html>

@@ -1,9 +1,10 @@
-<header class="header">
-   {% load static %}
-   <link rel="icon" href="{% static 'img/logo.png' %}">
-   <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
-   <title>Проект Foodgram</title>
-   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<header>
+    {% load static %}
+    <link rel="icon" href="{% static 'img/fav/favicon.ico' %}">
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title>Проект Foodgram</title>
     <nav class="nav">
         <div class="nav__container container">
             {% if user.is_authenticated %}
