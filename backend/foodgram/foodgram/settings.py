@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'recipes.apps.RecipesConfig',
     'about.apps.AboutConfig',
-    # 'api.apps.ApiConfig',
+    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [

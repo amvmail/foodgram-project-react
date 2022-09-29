@@ -1,7 +1,7 @@
 from django import forms
 from django.shortcuts import get_object_or_404
 
-from .models import Amount, Ingredient, Recipe
+from .models import Amount, Ingredient, Recipe, Tag
 
 
 class RecipeForm(forms.ModelForm):
@@ -23,4 +23,4 @@ class RecipeForm(forms.ModelForm):
             recipe_ingredients = Amount(recipe=recipe,
                                         ingredient=ingredient,
                                         quantity=quantity)
-            recipe_ingredients.save()
+        recipe_ingredients.save()
