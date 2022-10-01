@@ -4,10 +4,11 @@ __pycache__/
 *$py.class
 
 #my ignore
-start_env.bat
-runserver.bat
+*.bat
 backend/foodgram/static/css/
 backend/foodgram/media/
+backend/foodgram/*.json
+backend/foodgram/import.py
 
 # C extensions
 *.so

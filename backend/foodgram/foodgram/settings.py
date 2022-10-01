@@ -28,11 +28,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
-    'users.apps.UsersConfig',
+    'djoser',
     'sorl.thumbnail',
+    'users.apps.UsersConfig',
+    'api.apps.ApiConfig',
     'recipes.apps.RecipesConfig',
     'about.apps.AboutConfig',
-    'api.apps.ApiConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -46,8 +48,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'foodgram.urls'
-
-# AUTH_USER_MODEL = 'users.User'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 
