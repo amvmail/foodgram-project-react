@@ -1,0 +1,3 @@
+{% load recipe_filters %}
+{% if recipe.author == request.user or request.user.is_superuser %}
+   <button class="button button_style_light-blue button_size_auto" name="edit" data-out>Редактировать</button>

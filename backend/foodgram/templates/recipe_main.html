@@ -35,14 +35,16 @@
                         </li>
                     </a>
                     {% if recipe.author == request.user or request.user.is_superuser %}
-                        <li class="single-card__item">  <a style="margin-left: 2.5em" href="{% url 'edit_recipe' recipe.id %}" class="single-card__text">Редактировать</a></li>
+                    <a href="{% url 'edit_recipe' recipe.id %}" class="single-card__text">
+                        <button type="submit" class="button button_style_blue">Редактировать</button>
+                    </a>
                     {% endif %}
                 </ul>
             </div>
             <ul class="single-card__items">
             {% if user.is_authenticated %}
-                {% include 'buttons/purchases_button.html' with main_recipe=True %}
-                {% include 'buttons/follow_button.html' with main_recipe=True profile=recipe.author%}
+                 {% include 'buttons/purchases_button.html' with main_recipe=True %}
+                 {% include 'buttons/follow_button.html' with main_recipe=True profile=recipe.author%}
             {% endif %}
             </ul>
             <div class="single-card__section">
