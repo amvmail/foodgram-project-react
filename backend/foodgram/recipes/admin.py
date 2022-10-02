@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Amount, Ingredient, Recipe, Subscription, Tag
+from .models import Amount, Ingredient, Recipe, Subscription, Tag, Favorite
+from foodgram.settings import EMPTY
 
 
 class AmountInline(admin.TabularInline):
@@ -37,3 +38,10 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
     list_display = ('pk', 'recipe', 'ingredient', 'quantity',)
     list_display_links = ('pk', 'recipe')
     list_filter = ('recipe', 'ingredient',)
+
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
+    list_display = ('user', 'recipe',)
+    list_filter = ('user', 'recipe',)
+    empty_value_display = EMPTY

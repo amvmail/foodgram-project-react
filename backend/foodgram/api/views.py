@@ -1,7 +1,7 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import AllowAny
 from recipes.models import Recipe, Tag, Amount, Ingredient
-from rest_framework import filters viewsets
+from rest_framework import filters, viewsets
 from .pagination import CustomPageNumberPagination
 from rest_framework.decorators import api_view
 

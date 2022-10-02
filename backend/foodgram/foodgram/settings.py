@@ -155,7 +155,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Constants of project
 RECORDS_ON_PAGE = 6
+EMPTY = '< Тут Пусто >'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
