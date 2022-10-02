@@ -3,6 +3,7 @@ from django.conf.urls import handler400, handler403, handler404, handler500  # n
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 handler400 = 'foodgram.views.bad_request'  # noqa
 handler403 = 'foodgram.views.permissions_denied'  # noqa
@@ -18,7 +19,13 @@ urlpatterns = [
          include('users.urls')),
     path('',
          include('recipes.urls')),
+    path(
+        'api/docs/',
+        TemplateView.as_view(template_name='redoc.html'),
+        name='redoc'
+    ),
     path('api/', include('api.urls')),
+
 ]
 
 if settings.DEBUG:
