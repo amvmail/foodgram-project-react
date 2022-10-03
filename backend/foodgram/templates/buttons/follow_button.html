@@ -1,8 +1,0 @@
-{% load recipe_filters %}
-{% if request.user != profile %}
-    {% if not request|is_follower:profile %}
-        {% if main_recipe %}<class="single-card__item">{% else %}<p class="follow_button">{% endif %}<button class="button button_style_light-blue button_size_auto" name="subscribe" data-out>Подписаться на автора</button></p>
-    {% else %}
-        {% if main_recipe %}<class="single-card__item">{% else %}<p class="follow_button">{% endif %}<button class="button button_style_light-blue button_size_auto" name="subscribe">Отписаться от автора</button></p>
-    {% endif %}
-{% endif %}
