@@ -10,13 +10,13 @@
 
 **Логины для тестов**
 ***
-superuser (admin) - login     super
+superuser (admin) - login     su
                     passwd    123456Aa
 testuser1 (user)  - login     food1
-                    passwd    Foodfood1
+                    passwd    12345678Aa
                     reg_email food1@foodgram.ru
 testuser1 (user)  - login     food2
-                    passwd    Foodfood2
+                    passwd    12345678Aa
                     reg_email food2@foodgram.ru
 ***
 

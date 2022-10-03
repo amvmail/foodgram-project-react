@@ -48,40 +48,7 @@ class RecipesSerializer(serializers.ModelSerializer):
     ingredient = AmountSerializer(read_only=True, many=True)
     image = Base64ImageField()
 
-    '''
-    def get_ingredients(self, obj):
-        ingredients = AmountSerializer.objects.filter(recipe=obj)
-        serializer = AmountSerializer(ingredient, many=True)
-    '''
-
     class Meta:
         read_only_fields = ('author',)
         fields = '__all__'
         model = Recipe
-
-
-'''
-class FollowSerializer(serializers.ModelSerializer):
-    user = serializers.SlugRelatedField(
-        queryset=User.objects.all(), slug_field='username',
-        default=serializers.CurrentUserDefault()
-    )
-    # было read_only=True вместо queryset
-    following = serializers.SlugRelatedField(slug_field='username',
-                                             queryset=User.objects.all())
-
-    def validate_following(self, following):
-        if self.context.get('request').user == following:
-            raise serializers.ValidationError
-        return following
-
-    class Meta:
-        model = Follow
-        exclude = ('id',)
-        validators = [
-            UniqueTogetherValidator(
-                queryset=Follow.objects.all(),
-                fields=['user', 'following']
-            )
-        ]
-'''
