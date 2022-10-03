@@ -17,7 +17,7 @@ with open('ingredients.json') as json_data:
 def list_to_json_file(list_of_dicts, file_name):
     with open(file_name+'.json', 'w') as file:
         json.dump(list_of_dicts, file)
-    print('{}.Json file created'.format('converted_my_ingredients'))
+    print('{}.Json file created'.format('converted2_my_ingredients'))
 
 
-list_to_json_file(new_list, 'converted_my_ingredients')
+list_to_json_file(new_list, 'converted2_my_ingredients')

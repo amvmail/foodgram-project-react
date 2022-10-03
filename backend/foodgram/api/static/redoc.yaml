@@ -28,10 +28,14 @@ servers:
 tags:
   - name: AUTH
     description: Регистрация пользователей и выдача токенов
-  - name: RECIPES
-    description: Просмотр всех рецептов
   - name: USERS
     description: Пользователи
+  - name: RECIPES
+    description: Просмотр всех рецептов
+  - name: TAGS
+    description: Просмотр всех тегов
+  - name: INGREDIENTS
+    description: Просмотр всех ингредиентов
 
 paths:
   /auth/signup/:
@@ -55,10 +59,16 @@ paths:
               required:
                 - email
                 - username
+                - first_name
+                - last_name
               properties:
                 email:
                   type: string
                 username:
+                  type: string
+                first_name:
+                  type: string
+                last_name:
                   type: string
       responses:
         200:
@@ -118,19 +128,19 @@ paths:
         404:
           description: Пользователь не найден
 
-  /categories/:
+  /recipes/:
     get:
       tags:
-        - CATEGORIES
-      operationId: Получение списка всех категорий
+        - RECIPES
+      operationId: Получение списка всех рецептов
       description: |
-        Получить список всех категорий
+        Получить список всех рецептов
 
         Права доступа: **Доступно без токена**
       parameters:
       - name: search
         in: query
-        description: Поиск по названию категории
+        description: Поиск по названию
         schema:
           type: string
       responses:
@@ -155,14 +165,14 @@ paths:
                         $ref: '#/components/schemas/Category'
     post:
       tags:
-        - CATEGORIES
+        - RECIPES
       operationId: Добавление новой категории
       description: |
         Создать категорию.
 
-        Права доступа: **Администратор.**
+        Права доступа: **Авторизованный пользователь или Администратор.**
 
-        Поле `slug` каждой категории должно быть уникальным.
+
       requestBody:
         content:
           application/json:
@@ -191,7 +201,7 @@ paths:
   /categories/{slug}/:
     delete:
       tags:
-        - CATEGORIES
+        - RECIPES
       operationId: Удаление категории
       description: |
         Удалить категорию.
@@ -220,16 +230,16 @@ paths:
   /genres/:
     get:
       tags:
-        - GENRES
-      operationId: Получение списка всех жанров
+        - TAG
+      operationId: Получение списка всех тегов
       description: |
-        Получить список всех жанров.
+        Получить список всех тегов.
 
         Права доступа: **Доступно без токена**
       parameters:
       - name: search
         in: query
-        description: Поиск по названию жанра
+        description: Поиск по названию тега
         schema:
           type: string
       responses:
@@ -251,24 +261,24 @@ paths:
                     results:
                       type: array
                       items:
-                        $ref: '#/components/schemas/Genre'
+                        $ref: '#/components/schemas/Tags'
     post:
       tags:
-        - GENRES
-      operationId: Добавление жанра
+        - TAGS
+      operationId: Добавление тега
       description: |
-        Добавить жанр.
+        Добавить тег.
 
-        Права доступа: **Администратор**.
+        Права доступа: **Авторизованный пользователь или Администратор**.
 
-        Поле `slug` каждого жанра должно быть уникальным.
+        Поле `name` каждого тега должно быть уникальным.
       responses:
         201:
           description: Удачное выполнение запроса
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Genre'
+                $ref: '#/components/schemas/Tags'
         400:
           description: 'Отсутствует обязательное поле или оно некорректно'
           content:
@@ -286,17 +296,17 @@ paths:
   /genres/{slug}/:
     delete:
       tags:
-        - GENRES
-      operationId: Удаление жанра
+        - TAGS
+      operationId: Удаление тега
       description: |
-        Удалить жанр.
+        Удалить тег.
 
         Права доступа: **Администратор**.
       parameters:
-      - name: slug
+      - name: name
         in: path
         required: true
-        description: Slug жанра
+        description: name тега
         schema:
           type: string
       responses:
@@ -315,7 +325,7 @@ paths:
   /titles/:
     get:
       tags:
-        - TITLES
+        - INGREDIENT
       operationId: Получение списка всех произведений
       description: |
         Получить список всех объектов.
@@ -364,7 +374,7 @@ paths:
                         $ref: '#/components/schemas/Title'
     post:
       tags:
-        - TITLES
+        - INGREDIENT
       operationId: Добавление произведения
       description: |
         Добавить новое произведение.
@@ -428,7 +438,7 @@ paths:
           description: Объект не найден
     patch:
       tags:
-        - TITLES
+        - INGREDIENT
       operationId: Частичное обновление информации о произведении
       description: |
         Обновить информацию о произведении
@@ -458,7 +468,7 @@ paths:
         - write:admin
     delete:
       tags:
-        - TITLES
+        - INGREDIENT
       operationId: Удаление произведения
       description: |
         Удалить произведение.
