@@ -7,26 +7,27 @@ from .views import (
     TagViewSet,
     UserViewSet,
     get_jwt_token,
-    SignUpViewSet,
+    signup
+    # SignUpViewSet,
 )
 
 app_name = 'api'
 
 router = DefaultRouter()
-router.register('recipes', RecipesViewSet, basename='recipes'),
-router.register('ingredient', IngredientViewSet, basename='ingredient'),
-router.register('tag', TagViewSet, basename='tags'),
+router.register('recipes', RecipesViewSet, basename='recipes')
+router.register('ingredient', IngredientViewSet, basename='ingredient')
+router.register('tag', TagViewSet, basename='tags')
 
-router.register('users', UserViewSet, basename='users'),
-router.register('signup', SignUpViewSet, basename='signup')
+router.register('users', UserViewSet)
+# router.register('signup', SignUpViewSet, basename='signup')
 
 urls_auth = [
-    path('signup/', SignUpViewSet, name='signup'),
-    path('users/', UserViewSet, name='users'),
+    path('users/', signup, name='users'),
+    path('signup/', signup, name='signup'),
     path('token/', get_jwt_token, name='token'),
 ]
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('auth/', include('djoser.urls')),
+    path('auth/', include(urls_auth)),
 ]

@@ -1,11 +1,11 @@
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from django.db import models
 from users.models import User
 
 # User = get_user_model()
 
 class Recipe(models.Model):
-    author = models.ForeignKey(get_user_model(),
+    author = models.ForeignKey(User(),
                                verbose_name='автор',
                                on_delete=models.CASCADE,
                                related_name='recipes')
@@ -106,7 +106,7 @@ class Tag(models.Model):
 
 
 class ShopList(models.Model):
-    user = models.ForeignKey(get_user_model(),
+    user = models.ForeignKey(User,
                              verbose_name='пользователь',
                              related_name='shoplist',
                              on_delete=models.CASCADE)
@@ -130,7 +130,7 @@ class Favorite(models.Model):
                                verbose_name='рецепт в избранном',
                                related_name='favorite_recipes',
                                on_delete=models.CASCADE)
-    user = models.ForeignKey(get_user_model(),
+    user = models.ForeignKey(User,
                              verbose_name='пользователь',
                              related_name='favorites',
                              on_delete=models.CASCADE)
@@ -146,11 +146,11 @@ class Favorite(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(get_user_model(),
+    user = models.ForeignKey(User,
                              verbose_name='подписчик',
                              related_name='follower',
                              on_delete=models.CASCADE)
-    author = models.ForeignKey(get_user_model(),
+    author = models.ForeignKey(User,
                                verbose_name='автор',
                                related_name='following',
                                on_delete=models.CASCADE)

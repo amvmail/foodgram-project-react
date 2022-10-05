@@ -1,5 +1,5 @@
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import Recipe, Tag, Ingredient, Amount
+from recipes.models import Recipe, Tag, Ingredient, Amount, Subscription
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.validators import UniqueValidator
@@ -7,14 +7,12 @@ from users.models import User
 
 
 class TagSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = 'name', 'value'
         model = Tag
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = 'title', 'dimension'
         model = Ingredient
@@ -28,7 +26,7 @@ class AmountSerializer(serializers.ModelSerializer):
     quantity = serializers.ReadOnlyField(source='Amount.quantity')
 
     class Meta:
-        fields = 'ingredient', 'dimension', 'id', 'recipe'
+        fields = 'id', 'ingredient', 'dimension',  'quantity', 'recipe'
         model = Amount
         validators = [
             UniqueTogetherValidator(
@@ -53,6 +51,36 @@ class RecipesSerializer(serializers.ModelSerializer):
         model = Recipe
 
 
+class FollowSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField(source='author.id')
+    email = serializers.ReadOnlyField(source='author.email')
+    username = serializers.ReadOnlyField(source='author.username')
+    first_name = serializers.ReadOnlyField(source='author.first_name')
+    last_name = serializers.ReadOnlyField(source='author.last_name')
+    is_subscribed = serializers.SerializerMethodField()
+    recipes = serializers.SerializerMethodField()
+    recipes_count = serializers.ReadOnlyField(source='author.recipes.count')
+
+    class Meta:
+        model = Subscription
+        fields = ('id', 'email', 'username', 'first_name', 'last_name',
+                  'is_subscribed', 'recipes', 'recipes_count')
+
+    def get_is_subscribed(self, obj):
+        return Subscribe.objects.filter(
+            user=obj.user,
+            author=obj.author
+        ).exists()
+
+    def get_recipes(self, obj):
+        request = self.context.get('request')
+        limit = request.GET.get('recipes_limit')
+        queryset = Recipe.objects.filter(author=obj.author)
+        if limit:
+            queryset = queryset[:int(limit)]
+        return RecipeFollowSerializer(queryset, many=True).data
+
+
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[
@@ -70,6 +98,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', 'first_name', 'last_name',)
 
+
 class UserEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -86,12 +115,14 @@ class SendEmailSerializer(serializers.ModelSerializer):
 
 
 class RegisterDataSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        validators=[UniqueValidator(queryset=User.objects.all())]
-    )
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
+    username = serializers.CharField(
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
 
     class Meta:
         model = User

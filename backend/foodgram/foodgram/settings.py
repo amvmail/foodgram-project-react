@@ -7,7 +7,6 @@ load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 SECRET_KEY = os.getenv('SECRET_KEY', default='%_ivm!8z0jn9p1e!fcwh3mnsr_!h2dz9m54l)1vx9q%c+y)l#1')
 
 DEBUG = os.getenv('DEBUG', default=True)
@@ -15,7 +14,6 @@ DEBUG = os.getenv('DEBUG', default=True)
 ALLOWED_HOSTS = ['*']
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -23,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',  # для yaml
     'rest_framework',
     'django_filters',
     'djoser',
@@ -55,21 +54,10 @@ LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
-INCLUDE_DIR = os.path.join(BASE_DIR, 'templates', 'include')
-ABOUT_DIR = os.path.join(BASE_DIR, 'templates', 'about')
-ERROR_DIR = os.path.join(BASE_DIR, 'templates', 'error')
-REGISTRATION_DIR = os.path.join(BASE_DIR, 'templates', 'registration')
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            TEMPLATES_DIR,
-            INCLUDE_DIR,
-            ABOUT_DIR,
-            ERROR_DIR,
-            REGISTRATION_DIR,
-        ],
+        'DIRS': [TEMPLATES_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +72,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -150,6 +137,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+AUTH_USER_MODEL = 'users.User'
+
 # Constants of project
 RECORDS_ON_PAGE = 6
 EMPTY = '< Тут Пусто >'
@@ -166,6 +155,6 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=2),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'AUTH_HEADER_TYPES': ('Bearer',),
 }
