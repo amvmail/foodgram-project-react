@@ -1,6 +1,6 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.tokens import default_token_generator
-from recipes.models import Recipe, Tag, Ingredient
+from recipes.models import Recipe, Tag, Ingredient, Amount
 from users.models import User
 from rest_framework import filters, viewsets, permissions, status
 from rest_framework.decorators import api_view, permission_classes, action
@@ -13,9 +13,20 @@ from rest_framework.serializers import ValidationError
 from .pagination import CustomPageNumberPagination
 from .serializers import (
     TagSerializer, RecipesSerializer,
-    IngredientSerializer, UserSerializer, TokenSerializer,
-    UserEditSerializer, RegisterDataSerializer
+    IngredientSerializer, UsersSerializer, TokenSerializer,
+    UserEditSerializer, RegisterDataSerializer, AmountSerializer
 )
+
+
+class AmountViewSet(viewsets.ReadOnlyModelViewSet):
+    """Viewset к Tag."""
+    queryset = Amount.objects.all()
+    serializer_class = AmountSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = CustomPageNumberPagination
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
+    filterset_fields = ('recipe', 'ingredient')
+    search_fields = ('recipe', 'ingredient',)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -108,7 +119,8 @@ def signup(request):
 @api_view(['POST'])
 @permission_classes([permissions.AllowAny])
 def get_jwt_token(request):
-    serializer = TokenSerializer(data=request.data)
+    # serializer = TokenSerializer(data=request.data)
+    # djoser.urls
     serializer.is_valid(raise_exception=True)
     user = get_object_or_404(
         User,
@@ -125,18 +137,22 @@ def get_jwt_token(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UsersViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UsersSerializer
     pagination_class = CustomPageNumberPagination
-    permission_classes = (IsAdmin,)
 
-    @action(methods=['get', 'patch', ],
+    @action(methods=['get', 'patch'],
             detail=False,
             url_path='me',
             permission_classes=[permissions.IsAuthenticated],
             serializer_class=UserEditSerializer,
+            )
+    @action(methods=['POST',],
+            detail=False,
+            permission_classes=[permissions.AllowAny],
+            serializer_class=RegisterDataSerializer,
             )
     def users_own_profile(self, request):
         user = request.user

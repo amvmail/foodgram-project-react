@@ -1,8 +1,13 @@
 from drf_extra_fields.fields import Base64ImageField
-from recipes.models import Recipe, Tag, Ingredient, Amount, Subscription
+from djoser.serializers import UserSerializer
 from rest_framework import serializers
+from rest_framework.serializers import (IntegerField, ModelSerializer,
+                                        PrimaryKeyRelatedField,
+                                        SerializerMethodField,
+                                        SlugRelatedField, ValidationError)
 from rest_framework.validators import UniqueTogetherValidator
 from rest_framework.validators import UniqueValidator
+from recipes.models import Recipe, Tag, Ingredient, Amount, Subscription
 from users.models import User
 
 
@@ -81,7 +86,8 @@ class FollowSerializer(serializers.ModelSerializer):
         return RecipeFollowSerializer(queryset, many=True).data
 
 
-class UserSerializer(serializers.ModelSerializer):
+# class UserSerializer(serializers.ModelSerializer):
+class UsersSerializer(UserSerializer):
     username = serializers.CharField(
         validators=[
             UniqueValidator(queryset=User.objects.all())

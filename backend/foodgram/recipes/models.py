@@ -1,11 +1,9 @@
-# from django.contrib.auth import get_user_model
 from django.db import models
 from users.models import User
 
-# User = get_user_model()
 
 class Recipe(models.Model):
-    author = models.ForeignKey(User(),
+    author = models.ForeignKey(User,
                                verbose_name='автор',
                                on_delete=models.CASCADE,
                                related_name='recipes')

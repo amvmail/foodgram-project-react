@@ -1,7 +1,15 @@
 from django.contrib import admin
 
 from .models import Amount, Ingredient, Recipe, Subscription, Tag, Favorite
+from users.models import User
 from foodgram.settings import EMPTY
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('email', 'username', 'role', 'first_name', 'last_name')
+    list_filter = ('username', 'email')
+    search_fields = ('username', 'email')
 
 
 class AmountInline(admin.TabularInline):

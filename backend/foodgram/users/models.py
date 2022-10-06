@@ -1,5 +1,3 @@
-# from django.contrib.auth import get_user_model
-# User = get_user_model()
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
@@ -31,18 +29,20 @@ class User(AbstractUser):
     first_name = models.TextField(
         verbose_name='Имя',
         null=True,
+        blank=True
     )
     last_name = models.TextField(
-        verbose_name='Имя',
+        verbose_name='Фамилия',
         null=True,
+        blank=True
     )
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
 
     @property
     def is_admin(self):
         return self.role == self.ADMIN
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
 
     class Meta:
         ordering = ['id']

@@ -1,33 +1,35 @@
 from django.urls import include, path
+from django.conf.urls.static import static, re_path
+from django.conf import settings
 from rest_framework.routers import DefaultRouter
+from rest_framework import permissions
 
 from .views import (
     RecipesViewSet,
     IngredientViewSet,
     TagViewSet,
-    UserViewSet,
-    get_jwt_token,
+    UsersViewSet,
+    AmountViewSet,
     signup
-    # SignUpViewSet,
 )
 
 app_name = 'api'
 
 router = DefaultRouter()
 router.register('recipes', RecipesViewSet, basename='recipes')
-router.register('ingredient', IngredientViewSet, basename='ingredient')
-router.register('tag', TagViewSet, basename='tags')
-
-router.register('users', UserViewSet)
-# router.register('signup', SignUpViewSet, basename='signup')
-
-urls_auth = [
-    path('users/', signup, name='users'),
-    path('signup/', signup, name='signup'),
-    path('token/', get_jwt_token, name='token'),
-]
+router.register('ingredients', IngredientViewSet, basename='ingredient')
+router.register('tags', TagViewSet, basename='tags')
+router.register('amounts', AmountViewSet, basename='amounts')
+router.register('user', UsersViewSet, basename='user')
 
 urlpatterns = [
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
     path('', include(router.urls)),
-    path('auth/', include(urls_auth)),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
