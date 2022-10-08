@@ -48,3 +48,4 @@ class User(AbstractUser):
         ordering = ['id']
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+

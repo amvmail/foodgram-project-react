@@ -1,5 +1,7 @@
+#from django.contrib.auth import get_user_model
 from django.db import models
 from users.models import User
+from .validators import image_size_validator
 
 
 class Recipe(models.Model):
@@ -14,7 +16,8 @@ class Recipe(models.Model):
                                     db_index=True)
     image = models.ImageField(verbose_name='изображение',
                               upload_to='recipes/',
-                              null=True)
+                              null=True,
+                              validators=[image_size_validator])
     description = models.TextField(verbose_name='описание')
     tags = models.ManyToManyField('Tag',
                                   verbose_name='теги',

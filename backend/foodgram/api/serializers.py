@@ -1,6 +1,7 @@
 from drf_extra_fields.fields import Base64ImageField
 from djoser.serializers import UserSerializer
 from rest_framework import serializers
+from rest_framework import permissions, status
 from rest_framework.serializers import (IntegerField, ModelSerializer,
                                         PrimaryKeyRelatedField,
                                         SerializerMethodField,
@@ -23,16 +24,16 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
 
 
-class AmountSerializer(serializers.ModelSerializer):
+class AmountGetSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField(source='ingredient.id')
-    recipe = serializers.ReadOnlyField(source='Amount.recipe')
-    ingredient = serializers.ReadOnlyField(source='ingredient.title')
-    dimension = serializers.ReadOnlyField(source='ingredient.dimension')
-    quantity = serializers.ReadOnlyField(source='Amount.quantity')
+    title = serializers.ReadOnlyField(source='ingredient.title')
+    dimension = serializers.ReadOnlyField(
+        source='ingredient.dimension'
+    )
 
     class Meta:
-        fields = 'id', 'ingredient', 'dimension',  'quantity', 'recipe'
         model = Amount
+        fields = ('id', 'title', 'dimension', 'quantity')
         validators = [
             UniqueTogetherValidator(
                 queryset=Amount.objects.all(),
@@ -41,19 +42,87 @@ class AmountSerializer(serializers.ModelSerializer):
         ]
 
 
-class RecipesSerializer(serializers.ModelSerializer):
-    author = serializers.SlugRelatedField(
-        slug_field='username', read_only=True,
-        default=serializers.CurrentUserDefault()
+class AmountSerializer(serializers.ModelSerializer):
+    quantity = serializers.IntegerField(write_only=True, min_value=1)
+    recipe = serializers.PrimaryKeyRelatedField(read_only=True)
+    id = serializers.PrimaryKeyRelatedField(
+        source='ingredient',
+        queryset=Ingredient.objects.all()
     )
-    tags = TagSerializer(many=True)
-    ingredient = AmountSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Amount
+        fields = '__all__'
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Amount.objects.all(),
+                fields=['ingredient', 'recipe']
+            )
+        ]
+
+
+class RecipeSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+    tags = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        many=True,
+    )
+    image = Base64ImageField(max_length=None, use_url=True)
+    cooking_time = serializers.IntegerField(min_value=1)
+
+    class Meta:
+        read_only_fields = ('id', 'author', 'tags')
+        fields = '__all__'
+        model = Recipe
+
+    def validate(self, data):
+        ingredients = self.initial_data.get('ingredients')
+        ingredients_list = [ingredient['id'] for ingredient in ingredients]
+        if len(ingredients_list) != len(set(ingredients_list)):
+            raise serializers.ValidationError(
+                'Ингредиент был выбран несколько раз'
+            )
+        return data
+
+    def create(self, validated_data):
+        ingredients_data = validated_data.pop('ingredients')
+        tags_data = validated_data.pop('tags')
+        recipe = Recipe.objects.create(**validated_data)
+        recipe.tags.set(tags_data)
+        amount_create(ingredients_data, Amount, recipe)
+        return recipe
+
+    def update(self, instance, validated_data):
+        if 'tags' in self.validated_data:
+            tags_data = validated_data.pop('tags')
+            instance.tags.set(tags_data)
+        if 'ingredients' in self.validated_data:
+            ingredients_data = validated_data.pop('ingredients')
+            amount_set = Amount.objects.filter(
+                recipe__id=instance.id)
+            amount_set.delete()
+            recipe_ingredient_create(ingredients_data, Amount, instance)
+        return super().update(instance, validated_data)
+
+    def to_representation(self, instance):
+        self.fields.pop('ingredients')
+        self.fields.pop('tags')
+        representation = super().to_representation(instance)
+        representation['ingredients'] = AmountGetSerializer(
+            Amount.objects.filter(recipe=instance), many=True
+        ).data
+        representation['tags'] = TagSerializer(
+            instance.tags, many=True
+        ).data
+        return representation
+
+
+class RecipeFollowSerializer(serializers.ModelSerializer):
     image = Base64ImageField()
 
     class Meta:
-        read_only_fields = ('author',)
-        fields = '__all__'
         model = Recipe
+        fields = ('id', 'name', 'image', 'cooking_time')
 
 
 class FollowSerializer(serializers.ModelSerializer):
@@ -72,7 +141,7 @@ class FollowSerializer(serializers.ModelSerializer):
                   'is_subscribed', 'recipes', 'recipes_count')
 
     def get_is_subscribed(self, obj):
-        return Subscribe.objects.filter(
+        return Subscription.objects.filter(
             user=obj.user,
             author=obj.author
         ).exists()
@@ -84,6 +153,38 @@ class FollowSerializer(serializers.ModelSerializer):
         if limit:
             queryset = queryset[:int(limit)]
         return RecipeFollowSerializer(queryset, many=True).data
+
+
+class RecipeGetSerializer(serializers.ModelSerializer):
+    image = Base64ImageField(max_length=None, use_url=True)
+    ingredients = serializers.SerializerMethodField()
+    author = UserSerializer(read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
+    is_favorited = serializers.SerializerMethodField()
+    is_in_shopping_cart = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'author', 'title', 'description', 'ingredients', 'tags',
+                  'cooking_time', 'is_favorited', 'is_in_shopping_cart',
+                  'image')
+        read_only_fields = ('id', 'author',)
+
+    def get_is_favorited(self, obj):
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+        return obj.favorite_recipes.filter(user=user).exists()
+
+    def get_is_in_shopping_cart(self, obj):
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+        return obj.shoplist.filter(user=user).exists()
+
+    def get_ingredients(self, obj):
+        amounts = Amount.objects.filter(recipe=obj)
+        return AmountGetSerializer(amounts, many=True).data
 
 
 # class UserSerializer(serializers.ModelSerializer):
@@ -100,9 +201,16 @@ class UsersSerializer(UserSerializer):
         ]
     )
 
+    def get_is_subscribed(self, obj):
+        user = self.context['request'].user
+        if user.is_anonymous:
+            return False
+        return Subscription.objects.filter(user=user, author=obj).exists()
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name',)
+        fields = ('username', 'email', 'first_name', 'last_name',
+                  'id', 'password')
 
 
 class UserEditSerializer(serializers.ModelSerializer):
