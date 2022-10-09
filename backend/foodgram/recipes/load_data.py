@@ -3,9 +3,9 @@ import csv
 from django.core.management.base import BaseCommand
 
 from foodgram.settings import BASE_DIR
-from recipes.models import Ingredient
+from .models import Ingredient
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 file_name = f'{BASE_DIR}/fixtures/ingredients.csv'
 
 
