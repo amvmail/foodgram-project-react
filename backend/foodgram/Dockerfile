@@ -2,7 +2,7 @@ FROM python:3.7-slim
 
 WORKDIR /app
 
-COPY foodgram/ /app
+COPY foodgram/ .
 
 COPY requirements.txt /app
 
