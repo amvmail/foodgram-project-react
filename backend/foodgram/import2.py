@@ -3,9 +3,12 @@ import json
 import mimetypes
 import os
 
+import django
+from django.conf import settings
+from django.urls import path
+
 from django.core.management.base import BaseCommand
 # from foodgram.settings import recipes
-
 from recipes.models import Ingredient
 
 
