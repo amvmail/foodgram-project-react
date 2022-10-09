@@ -1,7 +1,6 @@
 #from django.contrib.auth import get_user_model
 from django.db import models
-from users.models import User
-from .validators import image_size_validator
+from users.models import Userfrom .validators import image_size_validator
 
 
 class Recipe(models.Model):
