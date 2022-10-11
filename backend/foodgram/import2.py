@@ -4,22 +4,26 @@ import mimetypes
 import os
 
 import django
-from django.conf import settings
-from django.urls import path
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'foodgram.settings')
+# django.setup()
+
+# from channels.auth import AuthMiddlewareStack
+# from channels.routing import ProtocolTypeRouter, URLRouter
+# from django.core.asgi import get_asgi_application
 
 from django.core.management.base import BaseCommand
-# from foodgram.settings import recipes
 from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
     help = 'Импортирует ингридиенты'
-    filename: ingredients.json
-    mimetype: json
+    filename: 'ingredients.csv'
+    mimetype: 'csv'
 
     def add_arguments(self, parser):
         parser.add_argument(
-            'filename', type=json, help='Путь к файлу .json/.csv с данными')
+            'filename', type=csv, help='Путь к файлу .json/.csv с данными')
         parser.add_argument(
             '--keep-existing-data', action='store_true',
             help='Предварительная очистка данных модели Ingredients')

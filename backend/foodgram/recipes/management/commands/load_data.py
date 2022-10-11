@@ -14,5 +14,6 @@ class Command(BaseCommand):
         with open(file_name) as csv_file:
             reader = csv.reader(csv_file)
             for line in reader:
-                title, unit = line
+                # title, unit = line
+                title, dimension = line
                 Ingredient.objects.get_or_create(name=title, measurement_unit=dimension)
