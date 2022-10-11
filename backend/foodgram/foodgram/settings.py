@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
         'NAME': os.getenv('DB_NAME', default='foodgram'),
-        'USER': os.getenv('POSTGRES_USER', default='postgres_foodgram'),
+        'USER': os.getenv('POSTGRES_USER'), #, default='postgres_foodgram'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='123456Aa'),
         # 'HOST': os.getenv('DB_HOST', default='postgresql'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
@@ -156,7 +156,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 6,
