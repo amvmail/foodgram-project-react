@@ -1,5 +1,5 @@
 # .github/workflows/**main.yml**
-name: Foodgram-app workflow
+name: Foodgram-app_workflow
 
 on: [push]
 
