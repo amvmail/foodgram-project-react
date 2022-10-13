@@ -1,20 +1,22 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import filters, viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 # from django.contrib.auth.tokens import default_token_generator
 from recipes.models import (
     Recipe, Tag, Ingredient, Amount, Favorite, ShopList, Subscription)
+from rest_framework import filters, viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from users.models import User
-from .utils import delete, post
+
 from .pagination import CustomPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     TagSerializer, RecipeSerializer,
     IngredientSerializer, UsersSerializer, UserEditSerializer, RegisterDataSerializer, AmountSerializer,
     RecipeGetSerializer, RecipeFollowSerializer, FollowSerializer)
+from .utils import delete, post
+
 
 # from rest_framework.permissions import AllowAny
 # from rest_framework_simplejwt.tokens import AccessToken
@@ -100,7 +102,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         return delete(request, pk, Favorite)
 
     @action(detail=True, methods=['POST', 'DELETE'], )
-    def shopList(self, request, pk):
+    def shoplist(self, request, pk):
         if request.method == 'POST':
             return post(request, pk, ShopList, RecipeFollowSerializer)
         return delete(request, pk, ShopList)
@@ -159,7 +161,7 @@ class UsersViewSet(viewsets.ModelViewSet):
             detail=False,
             url_path='me',
             permission_classes=[permissions.IsAuthenticated],
-            serializer_class=UserEditSerializer,
+            serializer_class=UserEditSerializer, 
             )
     @action(methods=['POST',],
             detail=False,
