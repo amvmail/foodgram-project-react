@@ -1,24 +1,22 @@
+from django.shortcuts import get_object_or_404
+from rest_framework import filters, viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 # from django.contrib.auth.tokens import default_token_generator
 from recipes.models import (
-    Recipe, Tag, Ingredient, Amount, Favorite,
-    ShopList, Subscription
-)
-from rest_framework import filters, viewsets, permissions, status
-from rest_framework.decorators import action
-# from rest_framework.permissions import AllowAny
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
+    Recipe, Tag, Ingredient, Amount, Favorite, ShopList, Subscription)
 from users.models import User
-
+from .utils import delete, post
 from .pagination import CustomPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (
     TagSerializer, RecipeSerializer,
     IngredientSerializer, UsersSerializer, UserEditSerializer, RegisterDataSerializer, AmountSerializer,
-    RecipeGetSerializer)
+    RecipeGetSerializer, RecipeFollowSerializer, FollowSerializer)
 
-
+# from rest_framework.permissions import AllowAny
 # from rest_framework_simplejwt.tokens import AccessToken
 # from rest_framework.serializers import ValidationError
 
@@ -238,4 +236,3 @@ class UsersViewSet(viewsets.ModelViewSet):
             context={'request': request}
         )
         return self.get_paginated_response(serializer.data)
-

@@ -32,7 +32,7 @@ def delete(request, pk, model):
     )
 
 
-def recipe_ingredient_create(ingredients_data, models, recipe):
+def amount_create(ingredients_data, models, recipe):
     bulk_create_data = (
         models(
             recipe=recipe,

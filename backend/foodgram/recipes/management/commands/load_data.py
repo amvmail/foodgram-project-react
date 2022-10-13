@@ -10,7 +10,6 @@ class Command(BaseCommand):
     в БД Ingredient из csv файла, который располагается в
     директории recipes/management/fixtures/.
     """
-
     def handle(self, *args, **options):
         self.import_ingredients()
         print('Загрузка ингредиентов завершена.')
