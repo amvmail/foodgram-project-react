@@ -6,9 +6,8 @@ from recipes.models import Ingredient
 
 class Command(BaseCommand):
     """
-    Команда 'load_ingredients' загружает ингредиенты
-    в БД Ingredient из csv файла, который располагается в
-    директории recipes/management/fixtures/.
+    Загрузка ингредиентов в БД Ingredient из csv файла, который располагается'
+        в директории recipes/management/fixtures/.
     """
     def handle(self, *args, **options):
         self.import_ingredients()
