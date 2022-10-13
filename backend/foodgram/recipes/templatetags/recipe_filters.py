@@ -1,5 +1,4 @@
 from django import template
-
 from recipes.models import Favorite, ShopList, Subscription
 
 register = template.Library()

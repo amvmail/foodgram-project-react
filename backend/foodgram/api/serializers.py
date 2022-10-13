@@ -1,15 +1,11 @@
-from drf_extra_fields.fields import Base64ImageField
 from djoser.serializers import UserSerializer
+from drf_extra_fields.fields import Base64ImageField
+from recipes.models import Amount, Ingredient, Recipe, Subscription, Tag
 from rest_framework import serializers
-from rest_framework import permissions, status
-from rest_framework.serializers import (IntegerField, ModelSerializer,
-                                        PrimaryKeyRelatedField,
-                                        SerializerMethodField,
-                                        SlugRelatedField, ValidationError)
-from rest_framework.validators import UniqueTogetherValidator
-from rest_framework.validators import UniqueValidator
-from recipes.models import Recipe, Tag, Ingredient, Amount, Subscription
+from rest_framework.validators import UniqueTogetherValidator, UniqueValidator
 from users.models import User
+
+from .utils import amount_create
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -101,7 +97,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             amount_set = Amount.objects.filter(
                 recipe__id=instance.id)
             amount_set.delete()
-            recipe_ingredient_create(ingredients_data, Amount, instance)
+            amount_create(ingredients_data, Amount, instance)
         return super().update(instance, validated_data)
 
     def to_representation(self, instance):

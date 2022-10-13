@@ -1,17 +1,15 @@
 import csv
 
 from django.core.management.base import BaseCommand
-
 from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
     """
     Команда 'load_ingredients' загружает ингредиенты
-    в базу из csv файла, который располагается в
-    директории /data/
+    в БД Ingredient из csv файла, который располагается в
+    директории recipes/management/fixtures/.
     """
-
     def handle(self, *args, **options):
         self.import_ingredients()
         print('Загрузка ингредиентов завершена.')

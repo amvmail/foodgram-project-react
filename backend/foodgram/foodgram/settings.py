@@ -54,7 +54,7 @@ DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = '/auth/login/'
-APPEND_SLASH=False
+APPEND_SLASH = False
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
@@ -82,12 +82,12 @@ WSGI_APPLICATION = 'foodgram.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', default='foodgram'),
-        # 'NAME': os.getenv('DB_NAME', default='postgres'),
-        'USER': os.getenv('POSTGRES_USER', default='postgres_foodgram'),
-        # 'USER': os.getenv('POSTGRES_USER', default='postgres'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='123456Aa'),
-        # 'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
+        # 'NAME': os.getenv('DB_NAME', default='foodgram'),
+        'NAME': os.getenv('DB_NAME', default='postgres'),
+        #'USER': os.getenv('POSTGRES_USER', default='postgres_foodgram'),
+        'USER': os.getenv('POSTGRES_USER', default='postgres'),
+        # 'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='123456Aa'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='postgres'),
         # 'HOST': os.getenv('DB_HOST', default='postgresql'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
         'PORT': os.getenv('DB_PORT', default='5432')
