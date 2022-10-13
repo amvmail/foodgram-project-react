@@ -1,8 +1,8 @@
 from django.contrib import admin
 from foodgram.settings import EMPTY
 
-from .models import (Amount, Ingredient, Recipe,
-                     Subscription, Tag, Favorite, ShopList)
+from .models import (Amount, Favorite, Ingredient, Recipe, ShopList,
+                     Subscription, Tag)
 
 
 class AmountInline(admin.TabularInline):
