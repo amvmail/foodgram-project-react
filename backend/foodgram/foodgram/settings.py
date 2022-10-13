@@ -54,7 +54,7 @@ DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
 LOGIN_URL = '/auth/login/'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = '/auth/login/'
-APPEND_SLASH=False
+APPEND_SLASH = False
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
@@ -85,7 +85,6 @@ DATABASES = {
         'NAME': os.getenv('DB_NAME', default='foodgram'),
         'USER': os.getenv('POSTGRES_USER', default='postgres_foodgram'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', default='123456Aa'),
-        'HOST': os.getenv('DB_HOST', default='postgresql'),
         'HOST': os.getenv('DB_HOST', default='localhost'),
         'PORT': os.getenv('DB_PORT', default='5432')
     }
