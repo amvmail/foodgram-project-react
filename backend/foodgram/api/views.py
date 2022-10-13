@@ -18,11 +18,6 @@ from .serializers import (
 from .utils import delete, post
 
 
-# from rest_framework.permissions import AllowAny
-# from rest_framework_simplejwt.tokens import AccessToken
-# from rest_framework.serializers import ValidationError
-
-
 class AmountViewSet(viewsets.ReadOnlyModelViewSet):
     """Viewset к Tag."""
     queryset = Amount.objects.all()
@@ -161,13 +156,12 @@ class UsersViewSet(viewsets.ModelViewSet):
             detail=False,
             url_path='me',
             permission_classes=[permissions.IsAuthenticated],
-            serializer_class=UserEditSerializer, 
+            serializer_class=UserEditSerializer,
             )
-    @action(methods=['POST',],
+    @action(methods=['POST', ],
             detail=False,
             permission_classes=[permissions.AllowAny],
-            serializer_class=RegisterDataSerializer,
-            )
+            serializer_class=RegisterDataSerializer)
     def users_own_profile(self, request):
         user = request.user
         if request.method == 'GET':
