@@ -1,3 +1,6 @@
+from django.core.exceptions import ValidationError
+
+
 def image_size_validator(image):
     """
     Validate the maximum size for the image uploaded to the site.

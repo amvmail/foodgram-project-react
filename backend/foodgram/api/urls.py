@@ -1,8 +1,7 @@
-from django.urls import include, path
-from django.conf.urls.static import static, re_path
 from django.conf import settings
+from django.conf.urls.static import static  # , re_path
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
-from rest_framework import permissions
 
 from .views import (
     RecipesViewSet,
@@ -11,6 +10,8 @@ from .views import (
     UsersViewSet,
     AmountViewSet,
 )
+
+# from rest_framework import permissions
 
 app_name = 'api'
 
