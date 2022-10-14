@@ -1,7 +1,9 @@
 version: '3.8'
+
 services:
   db:
     image: postgres:13.0-alpine
+    restart: always
     volumes:
       - db_data:/var/lib/postgresql/data/
     env_file:
@@ -13,14 +15,13 @@ services:
         dockerfile: Dockerfile
       restart: always
       volumes:
-        - static_value:/app/static/
+        - static_value:/app/static_backend/
         - media_value:/app/media/
       depends_on:
         - db
       env_file:
         - ./.env
   frontend:
-    # image: amvmail/foodgram_frontend:latest
     build:
       context: ../frontend
       dockerfile: Dockerfile
