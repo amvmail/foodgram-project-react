@@ -51,7 +51,7 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 DEFAULT_FROM_EMAIL = 'admin@foodgram.com'
 
-LOGIN_URL = '/auth/login/'
+LOGIN_URL = 'index'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = '/auth/login/'
 APPEND_SLASH = False
@@ -133,12 +133,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-STATICFILES_DIRS = [
-os.path.join(BASE_DIR, 'static/'),
-]
+# STATICFILES_DIRS = [
+# os.path.join(BASE_DIR, 'static/'),
+# ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media'/)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 AUTH_USER_MODEL = 'users.User'
 
