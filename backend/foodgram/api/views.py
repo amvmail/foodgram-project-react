@@ -151,11 +151,11 @@ class UsersViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
-    # serializer_class = UsersSerializer
-    serializer_class = FollowSerializer
+    serializer_class = UsersSerializer
+    # serializer_class = FollowSerializer
     pagination_class = CustomPageNumberPagination
 
-    @action(methods=['GET', 'PATCH', 'POST'],
+    @action(methods=['GET', 'PATCH',],
             detail=False,
             url_path='me',
             permission_classes=[permissions.IsAuthenticated],
