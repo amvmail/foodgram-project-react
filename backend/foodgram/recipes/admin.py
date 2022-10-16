@@ -3,6 +3,7 @@ from foodgram.settings import EMPTY
 
 from .models import (Amount, Favorite, Ingredient, Recipe, ShopList,
                      Subscription, Tag)
+from users.models import User
 
 
 class AmountInline(admin.TabularInline):
@@ -52,4 +53,14 @@ class RecipeIngredientAdmin(admin.ModelAdmin):
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe',)
     list_filter = ('user', 'recipe',)
+    empty_value_display = EMPTY
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'username', 'email',
+        'first_name', 'last_name'
+    )
+    list_filter = ('email', 'first_name', 'first_name', 'last_name')
     empty_value_display = EMPTY
