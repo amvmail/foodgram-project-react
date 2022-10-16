@@ -1,9 +1,10 @@
 from django.contrib import admin
+
 from foodgram.settings import EMPTY
+from users.models import User
 
 from .models import (Amount, Favorite, Ingredient, Recipe, ShopList,
                      Subscription, Tag)
-from users.models import User
 
 
 class AmountInline(admin.TabularInline):
@@ -39,7 +40,7 @@ class ShopList(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('value', 'style', 'name')
+    list_display = ('color', 'slug', 'name')
 
 
 @admin.register(Amount)

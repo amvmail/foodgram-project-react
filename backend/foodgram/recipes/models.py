@@ -1,4 +1,5 @@
 from django.db import models
+
 from users.models import User
 
 from .validators import image_size_validator
@@ -92,18 +93,18 @@ class Amount(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(verbose_name='название тега',
-                            max_length=50, null=True)
-    value = models.CharField(verbose_name='значение тега',
-                             max_length=50, null=True)
-    style = models.CharField(verbose_name='стиль тега',
-                             max_length=50, null=True)
+                            max_length=50, unique=True)
+    color = models.CharField(verbose_name='цвет',
+                             null=True, max_length=10)
+    slug = models.SlugField('Slug', unique=True, max_length=200)
 
     class Meta:
+        ordering = ['name']
         verbose_name = 'тег'
         verbose_name_plural = 'теги'
 
     def __str__(self):
-        return self.value
+        return self.name
 
 
 class ShopList(models.Model):
