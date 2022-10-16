@@ -150,10 +150,12 @@ def get_jwt_token(request):
 class UsersViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
     queryset = User.objects.all()
-    serializer_class = UsersSerializer
+    permission_classes = (AllowAny,)
+    # serializer_class = UsersSerializer
+    serializer_class = FollowSerializer
     pagination_class = CustomPageNumberPagination
 
-    @action(methods=['get', 'patch'],
+    @action(methods=['GET', 'PATCH', 'POST'],
             detail=False,
             url_path='me',
             permission_classes=[permissions.IsAuthenticated],
@@ -163,6 +165,7 @@ class UsersViewSet(viewsets.ModelViewSet):
             detail=False,
             permission_classes=[permissions.AllowAny],
             serializer_class=RegisterDataSerializer)
+
     def users_own_profile(self, request):
         user = request.user
         if request.method == 'GET':
