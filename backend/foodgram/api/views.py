@@ -13,11 +13,11 @@ from .pagination import CustomPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
 from .serializers import (AmountSerializer, FollowSerializer,
                           IngredientSerializer, RecipeFollowSerializer,
-                          RecipeGetSerializer, RecipeSerializer,
-                          TagSerializer, UsersSerializer)
-# RegisterDataSerializer, UserEditSerializer
+                          RecipeGetSerializer, RecipeSerializer, TagSerializer,
+                          UsersSerializer)
 from .utils import delete, post
 
+# RegisterDataSerializer, UserEditSerializer
 
 class AmountViewSet(viewsets.ReadOnlyModelViewSet):
     """Viewset к Tag."""
