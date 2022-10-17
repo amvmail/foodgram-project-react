@@ -14,8 +14,8 @@ from .permissions import IsOwnerOrReadOnly
 from .serializers import (AmountSerializer, FollowSerializer,
                           IngredientSerializer, RecipeFollowSerializer,
                           RecipeGetSerializer, RecipeSerializer,
-                          RegisterDataSerializer, TagSerializer,
-                          UserEditSerializer, UsersSerializer)
+                          TagSerializer, UsersSerializer)
+# RegisterDataSerializer, UserEditSerializer
 from .utils import delete, post
 
 
@@ -116,7 +116,6 @@ class UsersViewSet(viewsets.ModelViewSet):
         permission_classes=[AllowAny],
         methods=['POST', 'DELETE']
     )
-
     def subscribe(self, request, id=None):
         user = request.user
         author = get_object_or_404(User, id=id)
