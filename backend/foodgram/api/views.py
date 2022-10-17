@@ -19,6 +19,7 @@ from .utils import delete, post
 
 # RegisterDataSerializer, UserEditSerializer
 
+
 class AmountViewSet(viewsets.ReadOnlyModelViewSet):
     """Viewset к Tag."""
     queryset = Amount.objects.all()
