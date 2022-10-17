@@ -21,7 +21,7 @@ from .utils import delete, post
 
 
 class AmountViewSet(viewsets.ReadOnlyModelViewSet):
-    """Viewset к Tag."""
+    """Viewset Amount."""
     queryset = Amount.objects.all()
     serializer_class = AmountSerializer
     # permission_classes = (IsOwnerOrReadOnly,)
@@ -38,8 +38,8 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (AllowAny,)
     pagination_class = None
     filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
-    filterset_fields = ('name', 'value', 'style',)
-    search_fields = ('name', 'value',)
+    filterset_fields = ('name', 'color', 'slug',)
+    search_fields = ('name', 'slug',)
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -56,7 +56,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
 class RecipesViewSet(viewsets.ModelViewSet):
     """Viewset к рецептам."""
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    # serializer_class = RecipeSerializer
     pagination_class = CustomPageNumberPagination
     filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
     filterset_fields = ('title', 'author', 'tags', 'description', 'pub_date',)

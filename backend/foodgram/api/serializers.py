@@ -10,7 +10,7 @@ from .utils import amount_create
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
-        fields = 'name', 'value'
+        fields = 'name', 'slug'
         model = Tag
 
 
@@ -39,8 +39,8 @@ class AmountGetSerializer(serializers.ModelSerializer):
 
 
 class AmountSerializer(serializers.ModelSerializer):
-    quantity = serializers.IntegerField(write_only=True, min_value=1)
     recipe = serializers.PrimaryKeyRelatedField(read_only=True)
+    quantity = serializers.IntegerField(write_only=True, min_value=1)
     id = serializers.PrimaryKeyRelatedField(
         source='ingredient',
         queryset=Ingredient.objects.all()
@@ -59,6 +59,7 @@ class AmountSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
+    ingredients = AmountSerializer(many=True)
     tags = serializers.PrimaryKeyRelatedField(
         queryset=Tag.objects.all(),
         many=True,
