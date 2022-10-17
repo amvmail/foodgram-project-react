@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:13.0-alpine
+    # image: postgres:13.0-alpine
+    image: amvmail/db_13.0-alpine:latest
     restart: always
     volumes:
       - db_data:/var/lib/postgresql/data/
@@ -21,9 +22,10 @@ services:
       env_file:
         - ./.env
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: amvmail/frontend:latest
+    # build:
+      # context: ../frontend
+      # dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:

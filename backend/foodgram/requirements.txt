@@ -12,6 +12,7 @@ cryptography==37.0.2
 defusedxml==0.7.1
 Django==3.2.4
 django-autoslug==1.9.8
+django-colorfield==0.7.2
 django-debug-toolbar==3.2.1
 django-environ==0.4.5
 django-filter==2.4.0
@@ -44,7 +45,6 @@ pdfkit==0.6.1
 pep8-naming==0.11.1
 Pillow==9.2.0
 pluggy==0.13.1
-# psycopg2==2.8.6
 psycopg2-binary==2.8.6
 py==1.10.0
 pycodestyle==2.7.0
