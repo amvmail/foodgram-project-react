@@ -32,7 +32,7 @@ services:
       - backend
 
   nginx:
-    image: nginx:1.19.3
+    image: amvmail/nginx_1_19_3:latest
     ports:
       - "80:80"
     volumes:
