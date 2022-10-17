@@ -17,7 +17,6 @@ from .serializers import (AmountSerializer, FollowSerializer,
                           UsersSerializer)
 from .utils import delete, post
 
-
 # RegisterDataSerializer, UserEditSerializer
 
 
