@@ -21,10 +21,10 @@ services:
       env_file:
         - ./.env
   frontend:
-    # image: amvmail/frontend:latest
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: amvmail/infra-frontend:latest
+    # build:
+      # context: ../frontend
+      # dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
