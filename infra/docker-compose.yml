@@ -2,7 +2,6 @@ version: '3.8'
 
 services:
   db:
-    #image: postgres:13.0
     image: amvmail/postgres:13_0
     volumes:
       - db_data:/var/lib/postgresql/data/
