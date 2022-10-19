@@ -2,6 +2,11 @@ from django.conf import settings
 from rest_framework.pagination import PageNumberPagination
 
 
-class CustomPageNumberPagination(PageNumberPagination):
+class LimitPagePagination(PageNumberPagination):
+    """
+    Custom paginator:
+    page - Page number
+    limit - The number of objects on the page.
+    """
     page_size = settings.RECORDS_ON_PAGE
     page_size_query_param = 'limit'

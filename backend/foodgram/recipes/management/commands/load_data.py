@@ -6,7 +6,7 @@ from recipes.models import Ingredient
 
 class Command(BaseCommand):
     """
-    Загрузка ингредиентов в БД Ingredient из csv файла, который располагается'
+    Загрузка ингредиентов в Ingredient из csv файла, который располагается'
         в директории recipes/management/fixtures/.
     """
     def handle(self, *args, **options):
@@ -20,6 +20,6 @@ class Command(BaseCommand):
             reader = csv.reader(f)
             for row in reader:
                 status, created = Ingredient.objects.update_or_create(
-                    title=row[0],
-                    dimension=row[1]
+                    name=row[0],
+                    measurement_unit=row[1]
                 )
