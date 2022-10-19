@@ -1,9 +1,8 @@
 from django.utils.translation import gettext as _
+from recipes.models import Recipe
 from rest_framework import mixins, status, viewsets
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
-
-from recipes.models import Recipe
 
 
 class ListRetrieveCustomViewSet(mixins.ListModelMixin,
