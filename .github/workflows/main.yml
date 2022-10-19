@@ -43,6 +43,7 @@ jobs:
           push: true
           file: ./backend/foodgram/Dockerfile
           tags: amvmail/backend:latest
+
   send_message:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
