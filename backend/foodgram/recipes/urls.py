@@ -12,7 +12,7 @@ urlpatterns = [
     path(
         'recipes/download_shopping_cart/',
         download_shopping_cart,
-        name='shopping_cart'
+        name='download_shopping_cart'
     ),
     path('', include(router.urls)),
 ]
