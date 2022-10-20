@@ -5,10 +5,8 @@ from recipes.models import Ingredient
 
 
 class Command(BaseCommand):
-    """
-    Загрузка ингредиентов в Ingredient из csv файла, который располагается'
-        в директории recipes/management/fixtures/.
-    """
+    """Загрузка ингредиентов в Ingredient из csv файла, который располагается'
+       в директории recipes/management/fixtures/."""
     def handle(self, *args, **options):
         self.import_ingredients()
         print('Загрузка ингредиентов завершена.')

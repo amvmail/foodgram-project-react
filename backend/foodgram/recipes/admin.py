@@ -41,6 +41,6 @@ class ShoppingCartAdmin(admin.ModelAdmin):
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    """Admin panel for the Favorite model"""
+    """Admin панель."""
     list_display = ('recipe', 'user')
     list_filter = ('user',)
