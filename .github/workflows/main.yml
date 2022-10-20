@@ -58,7 +58,7 @@ jobs:
           script: |
             sudo docker pull amvmail/backend:latest
             sudo docker ps -a -q
-            sudo docker stop
+            # sudo docker stop
             sudo docker-compose stop
             sudo docker-compose rm amvmail/backend:latest
             touch .env

@@ -5,10 +5,6 @@ from users.models import Follow, User
 
 
 class CustomCreateUserSerializers(serializers.ModelSerializer):
-    """
-    User creation serializer, redefinition of the password field,
-    for encoding the password when saving.
-    """
     password = serializers.CharField(
         write_only=True,
         required=True,
@@ -26,11 +22,6 @@ class CustomCreateUserSerializers(serializers.ModelSerializer):
 
 
 class CustomUserSerializers(serializers.ModelSerializer):
-    """
-    The user's serializer with an additional is_subscribed field,
-    returns False or True depending on the subscription to the author.
-    """
-
     is_subscribed = serializers.SerializerMethodField()
 
     def get_is_subscribed(self, obj):
