@@ -9,7 +9,7 @@ import MetaTags from 'react-meta-tags'
 const RecipeEdit = ({ onItemDelete }) => {
   const { value, handleChange, setValue } = useTags()
   const [ recipeName, setRecipeName ] = useState('')
-
+  const history = useHistory()
   const [ ingredientValue, setIngredientValue ] = useState({
     name: '',
     id: null,
@@ -29,7 +29,7 @@ const RecipeEdit = ({ onItemDelete }) => {
   const [ ingredients, setIngredients ] = useState([])
   const [ showIngredients, setShowIngredients ] = useState(false)
   const [ loading, setLoading ] = useState(true)
-  const history = useHistory()
+
 
   useEffect(_ => {
     if (ingredientValue.name === '') {

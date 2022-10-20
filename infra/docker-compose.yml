@@ -13,17 +13,19 @@ services:
         dockerfile: Dockerfile
       restart: always
       volumes:
-        - static_value:/code/static/
-        - media_value:/code/media/
+        # - static_value:/code/static/
+        # - media_value:/code/media/
+        - static_value:/app/static/
+        - media_value:/app/media/
       depends_on:
         - db
       env_file:
         - ./.env
   frontend:
-    image: amvmail/infra-frontend:latest
-    # build:
-      # context: ../frontend
-      # dockerfile: Dockerfile
+    # image: amvmail/infra-frontend:latest
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
     volumes:
       - ../frontend/:/app/result_build/
     depends_on:
@@ -46,6 +48,6 @@ services:
 
 volumes:
   db_data:
-  # result_build:
+  result_build:
   static_value:
   media_value:
