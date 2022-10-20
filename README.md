@@ -10,14 +10,17 @@
 
 **Логины для тестов**
 ***
+адрес сервера - http://ipbuild.ru 
+ip сервера    - 158.160.9.100
+
 superuser (admin) - login     su
                     passwd    123456Aa
-testuser1 (user)  - login     food1
-                    passwd    12345678Aa
-                    reg_email food1@foodgram.ru
-testuser1 (user)  - login     food2
-                    passwd    12345678Aa
-                    reg_email food2@foodgram.ru
+food1 (user)  - login     food1
+                passwd    12345678Aa
+                reg_email food1@foodgram.ru
+food2 (user)  - login     food2
+                passwd    12345678Aa
+                reg_email food2@foodgram.ru
 ***
 
 **Работа по подготовке сервера для установки сервиса.**
