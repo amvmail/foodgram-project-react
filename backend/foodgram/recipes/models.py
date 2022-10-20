@@ -6,9 +6,6 @@ from users.models import User
 
 
 class Tag(models.Model):
-    """
-    Recipe tag model, color field with a choice of colors in hex format.
-    """
     name = models.CharField(_('Имя'), max_length=50, unique=True)
     color = ColorField(_('Цвет HEX'), unique=True)
     slug = models.SlugField(_('Слаг'), unique=True)
@@ -23,9 +20,6 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    """
-    Ingredient Model
-    """
     name = models.CharField(_('Имя'), max_length=150, unique=True)
     measurement_unit = models.CharField(_('Единица измерения'), max_length=60)
 
@@ -39,7 +33,6 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    """Recipe Model"""
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name='recipes',
@@ -72,9 +65,6 @@ class Recipe(models.Model):
 
 
 class IngredientRecipe(models.Model):
-    """
-    A model for linking recipes, ingredients and the number of ingredients.
-    """
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.CASCADE,
                                    related_name='recipes',
@@ -83,7 +73,6 @@ class IngredientRecipe(models.Model):
                                on_delete=models.CASCADE,
                                related_name='ingredients_IngredientRecipe',
                                verbose_name=_('Рецепт'))
-    # amount = models.PositiveSmallIntegerField(_('Количество'))
     amount = models.IntegerField(default=1, verbose_name='Количество')
 
     def __str__(self):
@@ -96,9 +85,6 @@ class IngredientRecipe(models.Model):
 
 
 class Favorite(models.Model):
-    """
-    Model of selected recipes
-    """
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='recipes_favorites',
@@ -118,9 +104,6 @@ class Favorite(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """
-    Shopping List Model
-    """
     user = models.ForeignKey(User,
                              on_delete=models.CASCADE,
                              related_name='shopping_carts',
