@@ -43,6 +43,7 @@ services:
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
       - static_value:/var/html/static/
       - media_value:/var/html/media/
+      - redoc:/api/static/
     depends_on:
       - backend
       - frontend
@@ -52,3 +53,4 @@ volumes:
   result_build:
   static_value:
   media_value:
+  redoc:
