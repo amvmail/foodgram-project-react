@@ -13,11 +13,9 @@ services:
         dockerfile: Dockerfile
       restart: always
       volumes:
-        # - static_value:/code/static/
-        # - media_value:/code/media/
-        - static_value:/app/static/
-        - media_value:/app/media/
-        - redoc:/app/api/docs/
+        - static_value:/code/static/
+        - media_value:/code/media/
+        - data_value:/code/
       depends_on:
         - db
       env_file:
@@ -39,11 +37,10 @@ services:
     volumes:
       - ./default.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
-      - ../docs/:/usr/share/nginx/html/api/docs/
+      - ../docs/redoc.html:/usr/share/nginx/html/api/docs/redoc.html
       - ../docs/openapi-schema.yml:/usr/share/nginx/html/api/docs/openapi-schema.yml
       - static_value:/var/html/static/
       - media_value:/var/html/media/
-      - redoc:/api/static/
     depends_on:
       - backend
       - frontend
@@ -53,4 +50,4 @@ volumes:
   result_build:
   static_value:
   media_value:
-  redoc:
+  data_value:
