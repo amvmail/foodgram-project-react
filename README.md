@@ -13,8 +13,8 @@
 адрес сервера - http://ipbuild.ru 
 ip сервера    - 158.160.9.100
 
-superuser (admin) - login     su
-                    passwd    123456Aa
+superuser (admin) - login     su           email
+                    passwd    123456Aa   admin@foodgram.ru
 food1 (user)  - login     food1
                 passwd    12345678Aa
                 reg_email food1@foodgram.ru
