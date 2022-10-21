@@ -15,7 +15,6 @@ services:
       volumes:
         - static_value:/code/static/
         - media_value:/code/media/
-        - data_value:/code/data/
       depends_on:
         - db
       env_file:
@@ -50,4 +49,3 @@ volumes:
   result_build:
   static_value:
   media_value:
-  data_value:
