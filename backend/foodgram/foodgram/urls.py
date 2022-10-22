@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/',
          admin.site.urls),
     path(
-        'api/docs/',
+        'redoc/',
         TemplateView.as_view(template_name='redoc.html'),
         name='redoc'
     ),
