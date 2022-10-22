@@ -114,7 +114,6 @@ class RecipeViewSet(CustomRecipeModelViewSet):
         return Response(_('Разрешены только POST и DELETE запросы'),
                         status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-
     @action(detail=False, permission_classes=[permissions.IsAuthenticated])
     def download_shopping_cart(self, request):
         user = request.user
