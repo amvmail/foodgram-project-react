@@ -13,5 +13,10 @@ urlpatterns = [
         RecipeViewSet.as_view,
         name='download_shopping_cart'
     ),
+    path(
+        'docs/',
+        TemplateView.as_view(template_name='redoc.html'),
+        name='redoc'
+    ),
     path('', include(router.urls)),
 ]

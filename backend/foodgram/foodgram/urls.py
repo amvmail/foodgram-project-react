@@ -23,11 +23,6 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/',
          admin.site.urls),
-    path(
-        'redoc/',
-        TemplateView.as_view(template_name='redoc.html'),
-        name='redoc'
-    ),
     path('api/', include('recipes.urls')),
     path('api/', include('users.urls')),
 ]
