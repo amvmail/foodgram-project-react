@@ -56,7 +56,7 @@ python manage.py createsuperuser
 python manage.py collectstatic --no-input
 ***
 
-**Запуск сервера по адресу http://127.0.0.1/:8000**
+**Запуск сервера по адресу http://ipbuild.ru**
 ***
 python manage.py runserver
 ***
