@@ -10,7 +10,10 @@ backend/foodgram/media/
 backend/foodgram/*.json
 backend/foodgram/import.py
 backend/foodgram/*.css
-backend/foodgram/foodgram/settings.py
+# backend/foodgram/foodgram/settings.py
+backend/foodgram/static/drf-yasg/
+backend/foodgram/static/rest_framework/css/
+backend/foodgram/static/rest_framework/docs/css/
 
 # C extensions
 *.so
