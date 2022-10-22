@@ -115,36 +115,36 @@ class RecipeViewSet(CustomRecipeModelViewSet):
                         status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-@action(detail=False, permission_classes=[permissions.IsAuthenticated])
-def download_shopping_cart(self, request):
-    user = request.user
-    ingredients = IngredientRecipe.objects.filter(
-        recipe__shopping_carts__user=user).values(
-            'ingredient__name',
-            'ingredient__measurement_unit').order_by(
-            'ingredient__name').annotate(amount=Sum('amount'))
-    buffer = io.BytesIO()
-    canvas = Canvas(buffer)
-    pdfmetrics.registerFont(
-        TTFont('Country', 'Country.ttf', 'UTF-8'))
-    canvas.setFont('Country', size=36)
-    canvas.drawString(70, 800, _('Продуктовый помощник'))
-    canvas.drawString(70, 760, _('список покупок:'))
-    canvas.setFont('Country', size=18)
-    canvas.drawString(70, 700, _('Ингредиенты:'))
-    canvas.setFont('Country', size=16)
-    canvas.drawString(70, 670, _('Название:'))
-    canvas.drawString(220, 670, _('Количество:'))
-    canvas.drawString(350, 670, _('Единица измерения:'))
-    height = 630
-    for ingredient in ingredients:
-        canvas.drawString(70, height, f"{ingredient['ingredient__name']}")
-        canvas.drawString(250, height,
-                          f"{ingredient['amount']}")
-        canvas.drawString(380, height,
-                          f"{ingredient['ingredient__measurement_unit']}")
-        height -= 25
-    canvas.save()
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True,
-                        filename='Shoppinglist.pdf')
+    @action(detail=False, permission_classes=[permissions.IsAuthenticated])
+    def download_shopping_cart(self, request):
+        user = request.user
+        ingredients = IngredientRecipe.objects.filter(
+            recipe__shopping_carts__user=user).values(
+                'ingredient__name',
+                'ingredient__measurement_unit').order_by(
+                'ingredient__name').annotate(amount=Sum('amount'))
+        buffer = io.BytesIO()
+        canvas = Canvas(buffer)
+        pdfmetrics.registerFont(
+            TTFont('Country', 'Country.ttf', 'UTF-8'))
+        canvas.setFont('Country', size=36)
+        canvas.drawString(70, 800, _('Продуктовый помощник'))
+        canvas.drawString(70, 760, _('список покупок:'))
+        canvas.setFont('Country', size=18)
+        canvas.drawString(70, 700, _('Ингредиенты:'))
+        canvas.setFont('Country', size=16)
+        canvas.drawString(70, 670, _('Название:'))
+        canvas.drawString(220, 670, _('Количество:'))
+        canvas.drawString(350, 670, _('Единица измерения:'))
+        height = 630
+        for ingredient in ingredients:
+            canvas.drawString(70, height, f"{ingredient['ingredient__name']}")
+            canvas.drawString(250, height,
+                              f"{ingredient['amount']}")
+            canvas.drawString(380, height,
+                              f"{ingredient['ingredient__measurement_unit']}")
+            height -= 25
+        canvas.save()
+        buffer.seek(0)
+        return FileResponse(buffer, as_attachment=True,
+                            filename='Shoppinglist.pdf')
