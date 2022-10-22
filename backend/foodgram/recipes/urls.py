@@ -10,7 +10,7 @@ router.register('recipes', RecipeViewSet)
 urlpatterns = [
     path(
         'recipes/download_shopping_cart/',
-        RecipeViewSet,
+        RecipeViewSet.as_view,
         name='download_shopping_cart'
     ),
     path('', include(router.urls)),
