@@ -19,5 +19,10 @@ urlpatterns = [
         TemplateView.as_view(template_name='redoc.html'),
         name='redoc'
     ),
+    path(
+        'docs/openapi-schema.yml',
+        TemplateView.as_view(template_name='openapi-schema.yml'),
+        name='openapi'
+    ),
     path('', include(router.urls)),
 ]
