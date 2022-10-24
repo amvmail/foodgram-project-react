@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   db:
     image: amvmail/postgres:13_0
     volumes:
