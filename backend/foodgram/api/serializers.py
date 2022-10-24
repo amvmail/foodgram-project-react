@@ -97,7 +97,14 @@ class RecipeSerializers(serializers.ModelSerializer):
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
-        ingredients_list = {}
+        # ingredients_list = {}
+        ingredients_list = [ingredient['id'] for ingredient in ingredients]
+        if len(ingredients_list) != len(set(ingredients_list)):
+            raise serializers.validateError(
+                'Ингредиент может быть добавлен только один раз'
+            )
+        return data
+        '''
         if ingredients:
             for ingredient in ingredients:
                 if ingredient.get('id') in ingredients_list:
@@ -113,6 +120,7 @@ class RecipeSerializers(serializers.ModelSerializer):
             return data
         else:
             raise ValidationError(_('Добавление ингредиента в рецепт'))
+        '''
 
     def ingredient_recipe_create(self, ingredients_set, recipe):
         for ingredient_get in ingredients_set:
