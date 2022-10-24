@@ -1,5 +1,5 @@
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext as _
+# from django.core.exceptions import ValidationError
+# from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
