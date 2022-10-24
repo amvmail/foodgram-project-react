@@ -1,13 +1,11 @@
 import os
+from pathlib import Path
 
 from dotenv import load_dotenv
 
-# from pathlib import Path
-
 load_dotenv()
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
-BASE_DIR = os.path.dirname(os.path.dirname((os.path.abspath(__file__))))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', default='%_ivm!8z0jn9p1e!fcwh3mnsr_!h2dz9m54l)1vx9q%c+y)l#1')
 
@@ -30,7 +28,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djoser',
     'colorfield',
-    'recipes',
+    'recipe',
     'django_filters',
 ]
 

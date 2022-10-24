@@ -6,11 +6,11 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 router.register('tags', TagViewSet)
 router.register('ingredients', IngredientViewSet)
-router.register('recipes', RecipeViewSet)
+router.register('recipe', RecipeViewSet)
 
 urlpatterns = [
     path(
-        'api/recipes/download_shopping_cart/',
+        'api/recipe/download_shopping_cart/',
         RecipeViewSet.as_view,
         name='download_shopping_cart'
     ),

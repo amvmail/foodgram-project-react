@@ -47,7 +47,7 @@ class FollowUserSerializers(serializers.ModelSerializer):
 
 
 class TagSerializers(serializers.ModelSerializer):
-    """Tag serializer for recipes."""
+    """Tag serializer for recipe."""
     class Meta:
         model = Tag
         fields = '__all__'
@@ -61,7 +61,7 @@ class IngredientSerializers(serializers.ModelSerializer):
 
 
 class IngredientRecipeSerializers(serializers.ModelSerializer):
-    """ingredients for recipes."""
+    """ingredients for recipe."""
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -98,24 +98,18 @@ class RecipeSerializers(serializers.ModelSerializer):
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
         ingredients_list = {}
-        # ingredients_list = [ingredient['id'] for ingredient in ingredients]
-        # if len(ingredients_list) != len(set(ingredients_list)):
-        #    raise serializers.validationError(
-        #        'Ингредиент может быть добавлен только один раз'
-        #    )
-        # return data
         if ingredients:
             for ingredient in ingredients:
                 if ingredient.get('id') in ingredients_list:
                     raise ValidationError(
                         _('Ингредиент может быть добавлен только один раз'))
-                # if int(ingredient.get('amount')) <= 0:
-                #    raise ValidationError(
-                #        _('Добавьте количество для ингредиента больше 0')
-                #    )
-                # ingredients_list[ingredient.get('id')] = (
-                #     ingredients_list.get('amount')
-                # )
+                if int(ingredient.get('amount')) <= 0:
+                    raise ValidationError(
+                        _('Добавьте  количество для ингредиента больше 0')
+                    )
+                ingredients_list[ingredient.get('id')] = (
+                    ingredients_list.get('amount')
+                )
             return data
         else:
             raise ValidationError(_('Добавление ингредиента в рецепт'))
@@ -140,7 +134,7 @@ class RecipeSerializers(serializers.ModelSerializer):
         return recipe
 
     def update(self, instance, validated_data):
-        ''' instance.image = validated_data.get('image', instance.image)
+        instance.image = validated_data.get('image', instance.image)
         instance.name = validated_data.get('name', instance.name)
         instance.text = validated_data.get('text', instance.text)
         instance.cooking_time = validated_data.get('cooking_time',
@@ -148,35 +142,11 @@ class RecipeSerializers(serializers.ModelSerializer):
         instance.tags.clear()
         tags = self.initial_data.get('tags')
         instance.tags.set(tags)
-        IngredientRecipe.objects.filter(recipes=instance).delete()
+        instance.save()
+        IngredientRecipe.objects.filter(recipe=instance).delete()
         ingredients_set = self.initial_data.get('ingredients')
         self.ingredient_recipe_create(ingredients_set, instance)
-        instance.save()
         return instance
-        '''
-        # instance.tags.clear()
-        tags_data = validated_data.pop('tags')
-        instance.tags.set(tags)
-        ingredients_data = validated_data.pop('ingredients')
-        IngredientRecipe.objects.filter(recipe=instance).delete()
-        # self.create(ingredients, IngredientRecipe, instance)
-        self.ingredient_recipe_create(ingredients_set, instance)
-        # instance.ingredient = validated_data.pop('ingredients')
-        if validated_data.get('image'):
-            instance.image = validated_data.pop('image', instance.image)
-        instance.name = validated_data.pop('name', instance.name)
-        instance.text = validated_data.get('text', instance.text)
-        instance.cooking_time = validated_data.pop('cooking_time',
-                                                   instance.cooking_time)
-        # tags = self.initial_data.get('tags')
-        # instance.tags.set(tags)
-        # IngredientRecipe.objects.filter(recipes=instance).delete()
-        # ingredients_set = self.initial_data.get('ingredients')
-        # self.ingredient_recipe_create(ingredients_set, instance)
-        # self.ingredient_recipe_create(ingredients_set, instance)
-        instance.save()
-        # return recipes
-        return super().update(instance, validated_data)
 
     class Meta:
         model = Recipe
@@ -185,10 +155,10 @@ class RecipeSerializers(serializers.ModelSerializer):
 
 class FavoriteSerializers(serializers.ModelSerializer):
     """Serializer for favorite."""
-    id = serializers.ReadOnlyField(source='recipes.id')
-    name = serializers.ReadOnlyField(source='recipes.name')
-    image = serializers.ImageField(source='recipes.image')
-    cooking_time = serializers.ReadOnlyField(source='recipes.cooking_time')
+    id = serializers.ReadOnlyField(source='recipe.id')
+    name = serializers.ReadOnlyField(source='recipe.name')
+    image = serializers.ImageField(source='recipe.image')
+    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
 
     class Meta:
         model = Favorite
@@ -197,10 +167,10 @@ class FavoriteSerializers(serializers.ModelSerializer):
 
 class ShoppingCardSerializers(serializers.ModelSerializer):
     """Shopping_list serializer."""
-    id = serializers.ReadOnlyField(source='recipes.id')
-    name = serializers.ReadOnlyField(source='recipes.name')
-    image = serializers.ImageField(source='recipes.image')
-    cooking_time = serializers.ReadOnlyField(source='recipes.cooking_time')
+    id = serializers.ReadOnlyField(source='recipe.id')
+    name = serializers.ReadOnlyField(source='recipe.name')
+    image = serializers.ImageField(source='recipe.image')
+    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
 
     class Meta:
         model = ShoppingCart
