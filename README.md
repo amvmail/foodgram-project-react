@@ -10,8 +10,8 @@
 
 **Логины для тестов**
 ***
-адрес сервера - http://ipbuild.ru 
-ip сервера    - 158.160.9.100
+адрес сервера - http://ipbuild.ru (DNS-записи могут не успеть обновиться, прописан новый ip 24.20.22 в 21 ч. мск)
+ip сервера    - 51.250.109.184
 
 superuser (admin) - login     su           email
                     passwd    123456Aa   admin@foodgram.ru
