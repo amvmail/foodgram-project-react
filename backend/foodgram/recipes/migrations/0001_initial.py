@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=200, verbose_name='название')),
-                ('image', models.ImageField(upload_to='recipe/', verbose_name='Изображение')),
+                ('image', models.ImageField(upload_to='recipes/', verbose_name='Изображение')),
                 ('text', models.TextField(verbose_name='Описание')),
                 ('cooking_time', models.PositiveIntegerField(validators=[django.core.validators.MinValueValidator(limit_value=1, message='Введите число больше единицы')], verbose_name='Время приготовления')),
                 ('pub_date', models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='дата публикации')),
@@ -84,7 +84,7 @@ class Migration(migrations.Migration):
             name='ShoppingCart',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recipe', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='shopping_carts', to='recipe.recipe', verbose_name='Рецепт')),
+                ('recipes', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='shopping_carts', to='recipes.recipes', verbose_name='Рецепт')),
             ],
             options={
                 'verbose_name': 'Список покупок',

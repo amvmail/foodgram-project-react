@@ -493,7 +493,7 @@ paths:
         - name: recipes_limit
           required: false
           in: query
-          description: Количество объектов внутри поля recipe.
+          description: Количество объектов внутри поля recipes.
           schema:
             type: integer
       responses:
@@ -545,7 +545,7 @@ paths:
         - name: recipes_limit
           required: false
           in: query
-          description: Количество объектов внутри поля recipe.
+          description: Количество объектов внутри поля recipes.
           schema:
             type: integer
       responses:

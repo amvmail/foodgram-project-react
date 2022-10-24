@@ -35,16 +35,16 @@ class Ingredient(models.Model):
 class Recipe(models.Model):
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
-                               related_name='recipe',
+                               related_name='recipes',
                                verbose_name=_('автор'))
     name = models.CharField(verbose_name='название', max_length=200)
     ingredients = models.ManyToManyField('Ingredient',
                                          through='IngredientRecipe',
-                                         through_fields=('recipe',
+                                         through_fields=('recipes',
                                                          'ingredient'),
                                          verbose_name='ингредиенты')
 
-    image = models.ImageField(_('Изображение'), upload_to='recipe/')
+    image = models.ImageField(_('Изображение'), upload_to='recipes/')
     text = models.TextField(_('Описание'))
     tags = models.ManyToManyField(Tag, verbose_name=_('Тег'))
     cooking_time = models.PositiveIntegerField(
@@ -67,7 +67,7 @@ class Recipe(models.Model):
 class IngredientRecipe(models.Model):
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.CASCADE,
-                                   related_name='recipe',
+                                   related_name='recipes',
                                    verbose_name=_('Ингредиент'))
     recipe = models.ForeignKey(Recipe,
                                on_delete=models.CASCADE,
@@ -121,4 +121,4 @@ class ShoppingCart(models.Model):
         verbose_name = _('Список покупок')
         verbose_name_plural = _('Списки покупок')
         models.UniqueConstraint(
-            fields=['user', 'recipe'], name='unique_recording')
+            fields=['user', 'recipes'], name='unique_recording')
