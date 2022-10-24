@@ -154,7 +154,7 @@ class RecipeSerializers(serializers.ModelSerializer):
 
 
 class FavoriteSerializers(serializers.ModelSerializer):
-    """Serializer for favorite."""
+    """Serializer  for favorite."""
     id = serializers.ReadOnlyField(source='recipes.id')
     name = serializers.ReadOnlyField(source='recipes.name')
     image = serializers.ImageField(source='recipes.image')
