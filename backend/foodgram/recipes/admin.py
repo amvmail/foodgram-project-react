@@ -19,7 +19,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 class IngredientInLine(admin.StackedInline):
     model = IngredientRecipe
-    fields = ['ingredient', 'recipe', 'amount']
+    fields = ['ingredient', 'recipes', 'amount']
     extra = 3
 
 
@@ -35,11 +35,11 @@ class RecipeAdmin(admin.ModelAdmin):
 
 @admin.register(ShoppingCart)
 class ShoppingCartAdmin(admin.ModelAdmin):
-    list_display = ('user', 'recipe')
-    search_fields = ('user', 'recipe',)
+    list_display = ('user', 'recipes')
+    search_fields = ('user', 'recipes',)
 
 
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('recipe', 'user')
+    list_display = ('recipes', 'user')
     list_filter = ('user',)

@@ -47,7 +47,7 @@ class FollowUserSerializers(serializers.ModelSerializer):
 
 
 class TagSerializers(serializers.ModelSerializer):
-    """Tag serializer for recipe."""
+    """Tag serializer for recipes."""
     class Meta:
         model = Tag
         fields = '__all__'
@@ -61,7 +61,7 @@ class IngredientSerializers(serializers.ModelSerializer):
 
 
 class IngredientRecipeSerializers(serializers.ModelSerializer):
-    """ingredients for recipe."""
+    """ingredients for recipes."""
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
@@ -155,10 +155,10 @@ class RecipeSerializers(serializers.ModelSerializer):
 
 class FavoriteSerializers(serializers.ModelSerializer):
     """Serializer for favorite."""
-    id = serializers.ReadOnlyField(source='recipe.id')
-    name = serializers.ReadOnlyField(source='recipe.name')
-    image = serializers.ImageField(source='recipe.image')
-    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
+    id = serializers.ReadOnlyField(source='recipes.id')
+    name = serializers.ReadOnlyField(source='recipes.name')
+    image = serializers.ImageField(source='recipes.image')
+    cooking_time = serializers.ReadOnlyField(source='recipes.cooking_time')
 
     class Meta:
         model = Favorite
@@ -167,10 +167,10 @@ class FavoriteSerializers(serializers.ModelSerializer):
 
 class ShoppingCardSerializers(serializers.ModelSerializer):
     """Shopping_list serializer."""
-    id = serializers.ReadOnlyField(source='recipe.id')
-    name = serializers.ReadOnlyField(source='recipe.name')
-    image = serializers.ImageField(source='recipe.image')
-    cooking_time = serializers.ReadOnlyField(source='recipe.cooking_time')
+    id = serializers.ReadOnlyField(source='recipes.id')
+    name = serializers.ReadOnlyField(source='recipes.name')
+    image = serializers.ImageField(source='recipes.image')
+    cooking_time = serializers.ReadOnlyField(source='recipes.cooking_time')
 
     class Meta:
         model = ShoppingCart
