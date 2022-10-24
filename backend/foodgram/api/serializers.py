@@ -113,7 +113,7 @@ class RecipeSerializers(serializers.ModelSerializer):
                 #    raise ValidationError(
                 #        _('Добавьте количество для ингредиента больше 0')
                 #    )
-                ingredients_list[ingredients.get('id')] = (
+                ingredients_list[ingredient.get('id')] = (
                     ingredients_list.get('amount')
                 )
             return data
