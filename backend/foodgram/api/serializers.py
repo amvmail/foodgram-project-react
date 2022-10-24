@@ -47,7 +47,7 @@ class FollowUserSerializers(serializers.ModelSerializer):
 
 
 class TagSerializers(serializers.ModelSerializer):
-    """Tag serializer for recipes."""
+    """Tag serializer for recipe."""
     class Meta:
         model = Tag
         fields = '__all__'
@@ -61,7 +61,7 @@ class IngredientSerializers(serializers.ModelSerializer):
 
 
 class IngredientRecipeSerializers(serializers.ModelSerializer):
-    """ingredients for recipes."""
+    """ingredients for recipe."""
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
