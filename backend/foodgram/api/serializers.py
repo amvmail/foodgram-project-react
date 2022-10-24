@@ -1,5 +1,5 @@
-# from django.core.exceptions import ValidationError
-# from django.utils.translation import gettext as _
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
@@ -97,14 +97,13 @@ class RecipeSerializers(serializers.ModelSerializer):
 
     def validate(self, data):
         ingredients = self.initial_data.get('ingredients')
-        # ingredients_list = {}
-        ingredients_list = [ingredient['id'] for ingredient in ingredients]
-        if len(ingredients_list) != len(set(ingredients_list)):
-            raise serializers.validationError(
-                'Ингредиент может быть добавлен только один раз'
-            )
-        return data
-    '''
+        ingredients_list = {}
+        # ingredients_list = [ingredient['id'] for ingredient in ingredients]
+        # if len(ingredients_list) != len(set(ingredients_list)):
+        #    raise serializers.validationError(
+        #        'Ингредиент может быть добавлен только один раз'
+        #    )
+        # return data
         if ingredients:
             for ingredient in ingredients:
                 if ingredient.get('id') in ingredients_list:
@@ -114,7 +113,7 @@ class RecipeSerializers(serializers.ModelSerializer):
                 #    raise ValidationError(
                 #        _('Добавьте количество для ингредиента больше 0')
                 #    )
-                ingredients_list[ingredient.get('id')] = (
+                ingredients_list[ingredients.get('id')] = (
                     ingredients_list.get('amount')
                 )
             return data
