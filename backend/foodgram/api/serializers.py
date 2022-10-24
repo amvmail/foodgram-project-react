@@ -100,7 +100,7 @@ class RecipeSerializers(serializers.ModelSerializer):
         # ingredients_list = {}
         ingredients_list = [ingredient['id'] for ingredient in ingredients]
         if len(ingredients_list) != len(set(ingredients_list)):
-            raise serializers.validateError(
+            raise serializers.validationError(
                 'Ингредиент может быть добавлен только один раз'
             )
         return data
