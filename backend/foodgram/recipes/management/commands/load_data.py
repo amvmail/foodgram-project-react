@@ -11,7 +11,7 @@ class Command(BaseCommand):
         self.import_ingredients()
         print('Загрузка ингредиентов завершена.')
 
-    def import_ingredients(self, file='recipe/management/fixtures/ingredients.csv'):
+    def import_ingredients(self, file='recipes/management/fixtures/ingredients.csv'):
         print(f'Загрузка {file}...')
         file_path = f'{file}'
         with open(file_path, newline='', encoding='utf-8') as f:
