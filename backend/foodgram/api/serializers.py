@@ -92,16 +92,6 @@ class IngredientRecipeSerializers(serializers.ModelSerializer):
 
 
 class RecipeSerializers(serializers.ModelSerializer):
-    """
-    Recipe serializer with additional fields:
-    1. Favorites field False/True
-    2. The shopping list field is False/True
-    Validation of adding ingredients,
-    Method of adding ingredients to a recipe,
-    Redefined methods:
-    1. Creating a recipe
-    2. Changing the recipe.
-    """
     tags = TagSerializers(read_only=True, many=True)
     author = CustomUserSerializers(read_only=True)
     image = Base64ImageField()
@@ -128,7 +118,7 @@ class RecipeSerializers(serializers.ModelSerializer):
             for ingredient in ingredients:
                 if ingredient.get('id') in ingredients_list:
                     raise ValidationError(
-                        _('Ингредиент может быть добавлен только один раз'))
+                        _('Ингредиент уже добавлен'))
                 if int(ingredient.get('amount')) <= 0:
                     raise ValidationError(
                         _('Добавьте количество для ингредиента больше 0')
@@ -138,7 +128,7 @@ class RecipeSerializers(serializers.ModelSerializer):
                 )
             return data
         else:
-            raise ValidationError(_('Добавьте ингредиент в рецепт'))
+            raise ValidationError(_('Необходимо добавить ингредиент в рецепт'))
 
     def ingredient_recipe_create(self, ingredients_set, recipe):
         for ingredient_get in ingredients_set:
