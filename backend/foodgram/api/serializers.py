@@ -61,7 +61,7 @@ class IngredientSerializers(serializers.ModelSerializer):
 
 
 class IngredientRecipeSerializers(serializers.ModelSerializer):
-    """ingredients for recipe."""
+    """ingredients  for recipe."""
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
