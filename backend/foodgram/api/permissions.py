@@ -2,6 +2,10 @@ from rest_framework import permissions
 
 
 class AuthorOrReadOnly(permissions.BasePermission):
+    """
+    Deletion and modification
+    only by the author of the post or the administrator.
+    """
     def has_permission(self, request, view):
         return (request.method in permissions.SAFE_METHODS
                 or request.user.is_authenticated)

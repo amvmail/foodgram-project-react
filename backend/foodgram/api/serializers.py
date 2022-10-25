@@ -1,20 +1,32 @@
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
+from rest_framework import serializers
+
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
-from rest_framework import serializers
 from users.models import Follow
 from users.serializers import CustomUserSerializers
 
 
 class FollowRecipeSerializers(serializers.ModelSerializer):
+    """
+    Serializer for displaying a list of recipes in FollowUserSerializers.
+    """
     class Meta:
         model = Recipe
         fields = ('id', 'name', 'image', 'cooking_time')
 
 
 class FollowUserSerializers(serializers.ModelSerializer):
+    """
+    Subscriber serializer, with additional fields:
+    is_subscribed - subscription to the author (True)
+    recipes - recipes of the author
+    recipes_count - number of recipes of the author
+    Additionally, pagination for recipes is implemented:
+    recipes_limit.
+    """
     id = serializers.ReadOnlyField(source='author.id')
     email = serializers.ReadOnlyField(source='author.email')
     username = serializers.ReadOnlyField(source='author.username')
@@ -47,35 +59,50 @@ class FollowUserSerializers(serializers.ModelSerializer):
 
 
 class TagSerializers(serializers.ModelSerializer):
-    """Tag serializer for recipe."""
+    """
+    Tag serializer for recipes.
+    """
     class Meta:
         model = Tag
         fields = '__all__'
 
 
 class IngredientSerializers(serializers.ModelSerializer):
-    """Ingredients Serializer."""
+    """
+    Ingredients Serializer.
+    """
     class Meta:
         model = Ingredient
         fields = '__all__'
 
 
 class IngredientRecipeSerializers(serializers.ModelSerializer):
-    """ingredients  for recipe."""
+    """
+    Serializer of ingredients for recipes
+    """
     id = serializers.ReadOnlyField(source='ingredient.id')
     name = serializers.ReadOnlyField(source='ingredient.name')
     measurement_unit = serializers.ReadOnlyField(
         source='ingredient.measurement_unit'
     )
-    # amount = serializers.IntegerField()
+    amount = serializers.IntegerField()
 
     class Meta:
         model = IngredientRecipe
-        fields = ('id', 'name', 'measurement_unit', 'amount')
+        fields = '__all__'
 
 
 class RecipeSerializers(serializers.ModelSerializer):
-    """Recipe serializer."""
+    """
+    Recipe serializer with additional fields:
+    1. Favorites field False/True
+    2. The shopping list field is False/True
+    Validation of adding ingredients,
+    Method of adding ingredients to a recipe,
+    Redefined methods:
+    1. Creating a recipe
+    2. Changing the recipe.
+    """
     tags = TagSerializers(read_only=True, many=True)
     author = CustomUserSerializers(read_only=True)
     image = Base64ImageField()
@@ -112,7 +139,7 @@ class RecipeSerializers(serializers.ModelSerializer):
                 )
             return data
         else:
-            raise ValidationError(_('Добавление ингредиента в рецепт'))
+            raise ValidationError(_('Добавьте ингредиент в рецепт'))
 
     def ingredient_recipe_create(self, ingredients_set, recipe):
         for ingredient_get in ingredients_set:
@@ -154,7 +181,9 @@ class RecipeSerializers(serializers.ModelSerializer):
 
 
 class FavoriteSerializers(serializers.ModelSerializer):
-    """Serializer for favorite."""
+    """
+    Serializer of selected recipes.
+    """
     id = serializers.ReadOnlyField(source='recipe.id')
     name = serializers.ReadOnlyField(source='recipe.name')
     image = serializers.ImageField(source='recipe.image')
@@ -166,7 +195,9 @@ class FavoriteSerializers(serializers.ModelSerializer):
 
 
 class ShoppingCardSerializers(serializers.ModelSerializer):
-    """Shopping_list serializer."""
+    """
+    Shopping list serializer.
+    """
     id = serializers.ReadOnlyField(source='recipe.id')
     name = serializers.ReadOnlyField(source='recipe.name')
     image = serializers.ImageField(source='recipe.image')

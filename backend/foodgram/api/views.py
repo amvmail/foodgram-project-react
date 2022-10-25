@@ -5,8 +5,6 @@ from django.http import FileResponse
 from django.utils.translation import gettext as _
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
-from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
-                            ShoppingCart, Tag)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen.canvas import Canvas
@@ -14,6 +12,9 @@ from rest_framework import permissions, status
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
+
+from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
+                            ShoppingCart, Tag)
 from users.models import Follow, User
 
 from .filters import IngredientSearchFilter, RecipeFilter
@@ -26,6 +27,16 @@ from .serializers import (FavoriteSerializers, FollowUserSerializers,
 
 
 class CustomUserViewSet(UserViewSet):
+    """
+    Redefining UserViewSetb added new endpoints for subscriptions:
+    1. Subscribe
+    2. Delete the subscription
+    3. List of subscriptions
+    Pagination:
+    Page - page (by default 6 objects per page)
+    Limit - limit on the output of objects per page
+    Recipes_limit - the number of recipes the author has
+    """
     pagination_class = LimitPagePagination
 
     @action(detail=False, permission_classes=[permissions.IsAuthenticated])
@@ -68,12 +79,19 @@ class CustomUserViewSet(UserViewSet):
 
 
 class TagViewSet(ListRetrieveCustomViewSet):
+    """
+    ViewSet for TagSerializers only GET requests.
+    """
     queryset = Tag.objects.all()
     serializer_class = TagSerializers
     permission_classes = (permissions.AllowAny,)
 
 
 class IngredientViewSet(ListRetrieveCustomViewSet):
+    """
+    ViewSet for IngredientSerializers only GET requests.
+    Filter by ingredient name.
+    """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializers
     permission_classes = (permissions.AllowAny,)
@@ -82,6 +100,12 @@ class IngredientViewSet(ListRetrieveCustomViewSet):
 
 
 class RecipeViewSet(CustomRecipeModelViewSet):
+    """
+    Receptviews with additional methods:
+    1. Add/Remove from favorites
+    2. Add/remove from the shopping list
+    3. Get a shopping list in PDF format
+    """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializers
     pagination_class = LimitPagePagination
@@ -121,7 +145,7 @@ class RecipeViewSet(CustomRecipeModelViewSet):
             recipe__shopping_carts__user=user).values(
                 'ingredient__name',
                 'ingredient__measurement_unit').order_by(
-                'ingredient__name').annotate(amount=Sum('amount'))
+                    'ingredient__name').annotate(amount=Sum('amount'))
         buffer = io.BytesIO()
         canvas = Canvas(buffer)
         pdfmetrics.registerFont(

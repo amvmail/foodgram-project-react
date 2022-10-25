@@ -4,6 +4,12 @@ from django.utils.translation import gettext as _
 
 
 class User(AbstractUser):
+    """
+    Redefining the User model.
+    New extensions of the standard model have been added:
+    1. Roles for users (user, admin, block(ban))
+    2. User role verification
+    """
     USER = 'user'
     ADMIN = 'admin'
 
@@ -41,6 +47,7 @@ class User(AbstractUser):
 
 
 class Follow(models.Model):
+    """Subscription model for recipe authors"""
     user = models.ForeignKey(
         User, on_delete=models.CASCADE,
         related_name='follower',

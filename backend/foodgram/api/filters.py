@@ -1,10 +1,19 @@
+from django_filters import filters
 from django_filters.rest_framework import FilterSet, filters
-from recipes.models import Recipe, Tag
 from rest_framework.filters import SearchFilter
+
+from recipes.models import Recipe, Tag
 from users.models import User
 
 
 class RecipeFilter(FilterSet):
+    """
+    Filtering recipes:
+    1. By multiple tags
+    2. By the author of the publication
+    3. Only selected recipes
+    4. Only recipes in the shopping list.
+    """
     tags = filters.ModelMultipleChoiceFilter(field_name='tags__slug',
                                              queryset=Tag.objects.all(),
                                              to_field_name='slug')
@@ -30,4 +39,5 @@ class RecipeFilter(FilterSet):
 
 
 class IngredientSearchFilter(SearchFilter):
+    """Ingredients Search Filter"""
     search_param = 'name'
