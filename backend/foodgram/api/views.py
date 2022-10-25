@@ -26,16 +26,6 @@ from .serializers import (FavoriteSerializers, FollowUserSerializers,
 
 
 class CustomUserViewSet(UserViewSet):
-    """
-    Redefining UserViewSetb added new endpoints for subscriptions:
-    1. Subscribe
-    2. Delete the subscription
-    3. List of subscriptions
-    Pagination:
-    Page - page (by default 6 objects per page)
-    Limit - limit on the output of objects per page
-    Recipes_limit - the number of recipes the author has
-    """
     pagination_class = LimitPagePagination
 
     @action(detail=False, permission_classes=[permissions.IsAuthenticated])
@@ -78,19 +68,12 @@ class CustomUserViewSet(UserViewSet):
 
 
 class TagViewSet(ListRetrieveCustomViewSet):
-    """
-    ViewSet for TagSerializers only GET requests.
-    """
     queryset = Tag.objects.all()
     serializer_class = TagSerializers
     permission_classes = (permissions.AllowAny,)
 
 
 class IngredientViewSet(ListRetrieveCustomViewSet):
-    """
-    ViewSet for IngredientSerializers only GET requests.
-    Filter by ingredient name.
-    """
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializers
     permission_classes = (permissions.AllowAny,)
@@ -99,12 +82,6 @@ class IngredientViewSet(ListRetrieveCustomViewSet):
 
 
 class RecipeViewSet(CustomRecipeModelViewSet):
-    """
-    Receptviews with additional methods:
-    1. Add/Remove from favorites
-    2. Add/remove from the shopping list
-    3. Get a shopping list in PDF format
-    """
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializers
     pagination_class = LimitPagePagination

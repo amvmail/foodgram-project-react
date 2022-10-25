@@ -35,13 +35,13 @@ class RecipeAdmin(admin.ModelAdmin):
 
 
 class ShoppingCartAdmin(admin.ModelAdmin):
-    """Admin panel for the ShoppingCart model"""
+    """Админ панель shoping cart"""
     list_display = ('user', 'recipe')
     search_fields = ('user', 'recipe',)
 
 
 class FavoriteAdmin(admin.ModelAdmin):
-    """Admin panel for the Favorite model"""
+    """Админ панель Favorite"""
     list_display = ('recipe', 'user')
     list_filter = ('user',)
 
