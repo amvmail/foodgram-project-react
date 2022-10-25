@@ -2,7 +2,6 @@ from colorfield.fields import ColorField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import gettext as _
-
 from users.models import User
 
 

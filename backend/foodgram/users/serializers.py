@@ -1,7 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext as _
 from rest_framework import serializers
-
 from users.models import Follow, User
 
 
