@@ -58,9 +58,9 @@ jobs:
             sudo docker-compose stop
             # sudo docker-compose 
             sudo docker-compose rm amvmail/backend:latest
-            sudo docker-compose rm amvmail/infra-frontend:latest
+            # sudo docker-compose rm amvmail/infra-frontend:latest
             sudo docker pull amvmail/backend:latest
-            sudo docker pull amvmail/infra-frontend:latest
+            # sudo docker pull amvmail/infra-frontend:latest
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env
